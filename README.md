@@ -260,7 +260,7 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 | [Manual CLI Tools](docs/MANUAL_TOOLS.md) | Full CLI reference for all seven engines including return value schemas |
 | [Customization Guide](docs/CUSTOMIZATION.md) | Adding browsers, custom icons, themes, and extending the codebase |
 | [Building .exe Guide](BUILDING.md) | Step-by-step PyInstaller build guide for portable distribution |
-| [Screenshot Sandbox](sandbox/SANDBOX_README.md) | Optional Windows Sandbox environment with mock data for consistent screenshots and demos |
+| [BRT Sandbox Guide](sandbox/SANDBOX_README.md) | Optional Windows Sandbox environment with mock data for consistent screenshots and demos |
 
 ---
 
