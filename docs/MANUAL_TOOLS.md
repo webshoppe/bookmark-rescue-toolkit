@@ -2,6 +2,9 @@
 
 Every engine in `core/` runs independently from the command line - no GUI, no display required. This makes the toolkit scriptable, automatable, and usable in headless or server environments.
 
+> This guide is aimed at advanced users and automation scripts.  
+> If you only use the GUI, you can safely skip this document.
+
 **Run all commands from the repository root** with your virtual environment active.
 
 ---
@@ -41,7 +44,7 @@ python -m core.archive_beautifier --help
 
 ---
 
-## Stage 1 — Retriever
+## Stage 1: Retriever
 
 **Module:** `core/retriever.py`  
 **Purpose:** Scan a Windows installation and copy all bookmark artifacts into a structured output folder.
@@ -56,7 +59,7 @@ python -m core.retriever <source> <output> [--verbose]
 |---|---|---|
 | `source` | ✅ | Windows.old root, or any drive root (`D:\`) |
 | `output` | ✅ | Destination folder (created if absent) |
-| `--verbose` / `-v` | — | Print each copied file as it is processed |
+| `--verbose` / `-v` | - | Print each copied file as it is processed |
 
 ### Examples
 
@@ -67,7 +70,7 @@ python -m core.retriever "C:\Windows.old" "C:\Recovery\Raw"
 # Scan a secondary hard drive
 python -m core.retriever D:\ "C:\Recovery\Raw"
 
-# Verbose — see every file as it is copied
+# Verbose - see every file as it is copied
 python -m core.retriever "C:\Windows.old" "C:\Recovery\Raw" --verbose
 ```
 
@@ -107,9 +110,15 @@ Written to `output/manifest.json`. All downstream tools consume this file. It co
 | NTFS permission denied | Logged as a warning; scan continues |
 | Cannot write `manifest.json` | Logged as a warning; other output unaffected |
 
+For all available options, run:
+
+```bash
+python -m core.retriever --help
+```
+
 ---
 
-## Stage 2a — JSON Parser
+## Stage 2a: JSON Parser
 
 **Module:** `core/json_to_html.py`  
 **Purpose:** Convert a single Chromium `Bookmarks` file to Netscape HTML.
@@ -124,7 +133,7 @@ python -m core.json_to_html <source> <output> [--browser LABEL]
 |---|---|---|
 | `source` | ✅ | Chromium `Bookmarks` file (JSON; often no extension) |
 | `output` | ✅ | Output `.html` file path |
-| `--browser` | — | Label used in HTML title and link metadata (default: `"Chromium"`) |
+| `--browser` | - | Label used in HTML title and link metadata (default: `"Chromium"`) |
 
 ### Examples
 
@@ -149,9 +158,15 @@ Output    : brave.html
 | `ValueError: not valid JSON` | File is corrupt or truncated |
 | `ValueError: missing 'roots'` | Valid JSON but not a Chromium Bookmarks file |
 
+For all available options, run:
+
+```bash
+python -m core.json_to_html --help
+```
+
 ---
 
-## Stage 2b — SQLite Parser
+## Stage 2b: SQLite Parser
 
 **Module:** `core/sqlite_to_html.py`  
 **Purpose:** Convert a single Firefox-family `places.sqlite` to Netscape HTML.
@@ -166,7 +181,7 @@ python -m core.sqlite_to_html <source> <output> [--browser LABEL]
 |---|---|---|
 | `source` | ✅ | Firefox-family `places.sqlite` |
 | `output` | ✅ | Output `.html` file path |
-| `--browser` | — | Label used in HTML title and metadata (default: `"Firefox"`) |
+| `--browser` | - | Label used in HTML title and metadata (default: `"Firefox"`) |
 
 ### Examples
 
@@ -183,7 +198,7 @@ python -m core.sqlite_to_html "C:\Raw\Alice\Tor Browser\Desktop_profile.default\
       Some recently added bookmarks could be missing from the output.
 ```
 
-Informational only -> the committed data is fully readable.
+Informational only → the committed data is fully readable.
 
 ### Errors
 
@@ -192,9 +207,15 @@ Informational only -> the committed data is fully readable.
 | `FileNotFoundError` | Source path does not exist |
 | `RuntimeError: Not a valid Firefox places.sqlite` | Missing `moz_bookmarks` or `moz_places` tables |
 
+For all available options, run:
+
+```bash
+python -m core.sqlite_to_html --help
+```
+
 ---
 
-## Stage 3 — Vault Builder
+## Stage 3: Vault Builder
 
 **Module:** `core/vault_builder.py`  
 **Purpose:** Batch-convert all extracted artifacts into Netscape HTML and generate an `index.html` dashboard for browser import.
@@ -231,9 +252,15 @@ Vault ready: C:\Recovery\Vault\index.html
 
 When no `manifest.json` is present the Vault Builder falls back to walking the directory tree and inferring file types from names.
 
+For all available options, run:
+
+```bash
+python -m core.vault_builder --help
+```
+
 ---
 
-## Stage 4 — Bookmark Merger
+## Stage 4: Bookmark Merger
 
 **Module:** `core/bookmark_merger.py`  
 **Purpose:** Merge bookmarks from multiple sources into one deduplicated Netscape HTML file, or export to CSV/JSON for database tools.
@@ -315,6 +342,12 @@ URLs are compared without regard to the http/https scheme. For example, http://e
 ]
 ```
 
+For all available options, run:
+
+```bash
+python -m core.bookmark_merger --help
+```
+
 ---
 
 ## Search Engine
@@ -376,6 +409,12 @@ Found 3 result(s) for 'python tutorial':
          Added:  June 02, 2021
 ```
 
+For all available options, run:
+
+```bash
+python -m core.search --help
+```
+
 ---
 
 ## Archive Beautifier (CLI-only)
@@ -417,11 +456,20 @@ Archive ready: C:\Recovery\Archive\index.html
 | External `style.css` (editable) | ❌ | ✅ |
 | Back-to-index link on each page | ❌ | ✅ |
 
+For all available options, run:
+
+```bash
+python -m core.archive_beautifier --help
+```
+
 ---
 
 ## Scripting and Automation
 
 All public functions return structured dicts and raise typed exceptions, making them easy to use from other scripts.
+
+All CLI entry points return exit code `0` on success and a non‑zero exit code on hard failure (for example, a missing source path or an unreadable `manifest.json`).  
+This makes them easy to integrate into shell scripts and automation pipelines.
 
 ```python
 from core.retriever          import recover_bookmarks
