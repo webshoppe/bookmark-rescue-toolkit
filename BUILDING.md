@@ -32,7 +32,7 @@ The `.zip` archive created with `--zip` will be named `BookmarkRescue_vX.Y.Z.zip
 
 ## Prerequisites
 
-- Python **3.12+** (the same version used for development)
+- Python **3.10+** (developed and tested on 3.12)
 - Your virtual environment must be active
 - Build from the **repository root** (the folder containing `gui.py`)
 
@@ -62,6 +62,8 @@ pip install -r requirements.txt
 ```bash
 deactivate
 ```
+
+> **Tip:** Always deactivate your virtual environment when finished (`deactivate`) to avoid accidental use of the wrong Python environment.
 
 ### Build the executable
 ```bash
@@ -103,7 +105,7 @@ dist/
         README.md
         LICENSE
         _internal/
-    BookmarkRescue.zip                 <- only created with --zip flag
+    BookmarkRescue.zip _vX.Y.Z.zip     <- only created with --zip flag
 ```
 
 > The `.zip` archive created with `--zip` will be named `BookmarkRescue_vX.Y.Z.zip`.
@@ -206,6 +208,7 @@ Before building a release:
 2. Update any changelog if you maintain one
 3. Run `python build.py --clean --zip`
 
+When publishing on GitHub, use a tag like `vX.Y.Z` that matches the version in `core/version.py`. 
 The build script will automatically include the version in the output zip filename (`BookmarkRescue_vX.Y.Z.zip`).
 
 ---
@@ -215,7 +218,7 @@ The build script will automatically include the version in the output zip filena
 The `dist/Bookmark-Rescue-Toolkit/` folder is fully self-contained. To distribute it:
 
 1. Run `python build.py --zip`
-2. Upload `dist/BookmarkRescue.zip` to your GitHub release
+2. Upload `dist/BookmarkRescue.zip_vX.Y.Z.zip` to your GitHub release
 3. Users download, extract anywhere, and run `BookmarkRescue.exe`
 
 No installer, no admin rights, no Python required on the target machine.
