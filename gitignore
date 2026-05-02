@@ -1,0 +1,90 @@
+# ── Python bytecode ───────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+
+# ── Virtual environments ───────────────────────────────────────────────────
+# Common folder names -- covers pip venv, virtualenv, conda envs, and pyenv.
+# The Lib/, Scripts/, bin/, and include/ patterns catch the case where someone
+# names their venv something unusual (e.g. "myenv") and didn't add it here.
+.venv/
+venv/
+env/
+.env/
+ENV/
+venv.bak/
+.venv.bak/
+
+# venv internals -- catches stray subfolder commits if the root was excluded
+# but a sub-path was force-added
+Lib/
+Scripts/
+bin/
+include/
+share/lib/python*/
+lib/python*/
+
+# virtualenv / pyenv metadata files
+pyvenv.cfg
+.python-version
+
+# pip artefacts
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ── Distribution / packaging ──────────────────────────────────────────────
+*.egg-info/
+*.egg
+MANIFEST
+
+# ── PyInstaller build artifacts ───────────────────────────────────────────
+# build/ and dist/ are created by build.py and pyinstaller -- never commit.
+build/
+dist/
+*.spec.bak
+
+# ── Editors & OS noise ────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# ── Runtime-generated config ──────────────────────────────────────────────
+# Written by the GUI on close to remember last-used paths.
+# Contains local absolute paths -- meaningless to other contributors.
+config.json
+
+# ── Project-specific output folders ──────────────────────────────────────
+# Prevent accidental commits of recovered bookmark data.
+# Matches the workspace folder names recommended in the documentation.
+Raw_Data/
+Raw_Output/
+Final_Site/
+Vault_Site/
+Bookmark_Vault_Site/
+Recovered_Bookmarks/
+output/
+site/
+
+# ── SQLite databases (may contain personal data) ──────────────────────────
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+
+# ── Manifest and log files created at runtime ─────────────────────────────
+# manifest.json holds artifact paths from the user's local drive.
+# Log exports from the GUI activity log.
+manifest.json
+bookmark_rescue_log.txt
