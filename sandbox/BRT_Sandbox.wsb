@@ -1,0 +1,77 @@
+<Configuration>
+
+  <!--
+    BRT_Sandbox.wsb
+    Place this file in:  C:\Bookmark_Rescue\Sandbox\
+    Launch via:          Launch_BRT_Sandbox.bat  (never double-click this directly)
+
+    Host folder layout required before launching:
+
+      C:\Bookmark-Rescue-Toolkit\dist\Bookmark-Rescue-Toolkit\
+          BookmarkRescue.exe        <- built by: python build.py
+
+      C:\Bookmark_Rescue\
+          Sandbox\                  <- this file lives here
+          Screenshots\              <- created by launcher if missing
+          Windows.old\              <- created by launcher if missing
+              Users\
+                  Alex\
+                  Jordan\
+
+    Inside sandbox after startup:
+
+      C:\Windows.old\               <- the mock source drive (matches docs exactly)
+          Users\Alex\  Jordan\
+
+      C:\Bookmark_Rescue\           <- workspace root (matches docs)
+          1_Raw_Extracted_Data\
+          2_Vault_Site\
+          3_Merged\
+
+      Desktop\
+          BookmarkRescue\           <- portable app shortcut target
+          Screenshots\              <- save shots here, syncs to host live
+          Shortcuts to workspace folders
+  -->
+
+  <MemoryInMB>4096</MemoryInMB>
+  <Networking>Disable</Networking>
+  <vGPU>Enable</vGPU>
+
+  <MappedFolders>
+
+    <!-- Portable app (repo uses hyphen, workspace uses underscore - two separate roots) -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark-Rescue-Toolkit\dist\Bookmark-Rescue-Toolkit</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\BookmarkRescue</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+    <!-- Screenshot output - read-write, files appear on host instantly -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\Screenshots</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\Screenshots</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+
+    <!-- Sandbox scripts -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\Sandbox</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+    <!-- Mock Windows.old - read-only here, xcopy'd to C:\Windows.old by startup -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\Windows.old</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\MockSource</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+  </MappedFolders>
+
+  <LogonCommand>
+    <Command>C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts\sandbox_startup.bat</Command>
+  </LogonCommand>
+
+</Configuration>
