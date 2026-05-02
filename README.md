@@ -9,9 +9,17 @@ A forensic-grade, offline-first toolkit that scans a `Windows.old` folder or any
   <br><em>Sweeping a Windows backup drive to automatically locate and extract hidden bookmark files.</em>
 </p>
 
+> **Who is this for?**
+>
+> - Windows users who lost bookmarks after an upgrade or reinstall  
+> - IT admins and forensic techs recovering browser data from archived drives  
+> - Power users who want a portable, offline bookmark vault they can take anywhere
+
 ### Windows Compatibility
 
-Developed, built and tested on Windows 10 IoT Enterprise LTSC and presumed to be compatible with Windows 11. The Extractor works on any NTFS-formatted Windows drive or Windows.old folder.
+The Extractor works on any NTFS‑formatted Windows drive or `Windows.old` folder. The single‑file converters, Vault Builder, Merger, and Search run on any OS as long as you provide compatible files (for example, a copied `Bookmarks` file or `places.sqlite`).
+
+> Developed and tested on Windows 10 IoT Enterprise LTSC (presumed to be compatible with Windows 11).
 
 ---
 
@@ -30,7 +38,7 @@ Developed, built and tested on Windows 10 IoT Enterprise LTSC and presumed to be
 - **Offline-first**: no telemetry, no network calls, no external services at any stage
 - **Fully modular**: every engine runs as a standalone CLI tool or importable Python module
 
-> The portable build produces a folder named `Bookmark-Rescue-Toolkit` containing `BookmarkRescue.exe`. This folder (and the `.zip` archive) can be placed anywhere on your system or a USB drive.
+> **Note:** The portable build produces a folder named `Bookmark-Rescue-Toolkit` containing `BookmarkRescue.exe`. This folder (and the `.zip` archive) can be placed anywhere on your system or a USB drive.
 
 ---
 
@@ -87,7 +95,7 @@ Bookmark-Rescue-Toolkit/
 
 ### Prerequisites
 
-- Python **3.8** or newer (3.12 recommended)
+- Python **3.10** or newer (3.12 recommended)
 - A desktop environment to run the GUI
 - **Run as Administrator** on Windows when scanning a `Windows.old` folder
 
@@ -121,6 +129,8 @@ source .venv/bin/activate
 deactivate
 ```
 
+> **Tip:** Always deactivate your virtual environment when finished (`deactivate`) to avoid accidental use of the wrong Python environment.
+> 
 ---
 
 ### 3. Install dependencies
@@ -250,6 +260,7 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 | [Manual CLI Tools](docs/MANUAL_TOOLS.md) | Full CLI reference for all seven engines including return value schemas |
 | [Customization Guide](docs/CUSTOMIZATION.md) | Adding browsers, custom icons, themes, and extending the codebase |
 | [Building .exe Guide](BUILDING.md) | Step-by-step PyInstaller build guide for portable distribution |
+| [Screenshot Sandbox](sandbox/SANDBOX_README.md) | Optional Windows Sandbox environment with mock data for consistent screenshots and demos |
 
 ---
 
