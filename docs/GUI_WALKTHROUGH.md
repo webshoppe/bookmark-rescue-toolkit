@@ -18,30 +18,39 @@ C:\
     └── 3_Merged\                 ← Merger output (Tab 5)
 ```
 
-> When using the portable `.exe` from `dist/Bookmark-Rescue-Toolkit/`, the same Administrator requirement applies for the Extractor tab.
+> **Running the portable `.exe` vs. running from source**
+>
+> - If you are using `BookmarkRescue.exe` from the portable build, you do **not** need Python or a virtual environment. Only the Extractor tab requires Administrator rights when scanning protected folders.
+> - If you are running from source (`python gui.py`), ensure your virtual environment is active and that your terminal is running as Administrator when using the Extractor.
 
+> If you use the optional Windows Sandbox setup in [`sandbox/SANDBOX_README.md`](sandbox/SANDBOX_README.md), this exact workspace structure is created for you automatically inside the sandbox.
+> 
 ### Administrator privileges
 
 When scanning a `Windows.old` folder, the tool must run as Administrator. Windows protects old user profile folders with NTFS permissions that block normal reads.
 
-#### Option A: right-click your terminal → Run as administrator, then:
-```bash
-cd C:\Bookmark-Rescue-Toolkit
-py -3.12 -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python gui.py
-```
+#### Option A: Run your terminal as administrator, then follow the README
 
-#### Option B: right-click gui.py → Open with → Python (as administrator)
+1. Right‑click your terminal (Command Prompt or PowerShell) → **Run as administrator**.
+2. Follow the Quick Start steps in [README](../README.md) to:
+   - create and activate a virtual environment,
+   - install dependencies,
+   - run `python gui.py`.
 
-> Without elevated privileges, the Extractor may return 0 files copied due to NTFS permission restrictions. If the Extractor completes and reports **0 files copied**, this is almost always the cause. The log box will show `Permission denied` entries for each blocked folder.
+#### Option B: Run the GUI directly as administrator
+
+Right‑click `gui.py` → **Open with** → Python (as administrator).
+
+> Without elevated privileges, the Extractor may return **0 files copied** due to NTFS permission restrictions.  
+> If the Extractor completes and reports 0 files copied, this is almost always the cause. The log box will show `Permission denied` entries for each blocked folder.
 
 When you are finished working in the terminal, you can deactivate the virtual environment with:
 
 ```bash
 deactivate
 ```
+
+> **Tip:** Always deactivate your virtual environment when finished (`deactivate`) to avoid accidental use of the wrong Python environment.
 
 ---
 
@@ -361,7 +370,8 @@ The search path points at a folder that hasn't been processed by the Extractor (
 The file is encoded correctly (UTF-8 with BOM). Open Excel and use **Data → From Text/CSV** and choose UTF-8 encoding, or simply double-click the file - the BOM should handle it automatically on modern Excel versions.
 
 **Closing the app during an operation left a partial output**  
-The extraction can be safely re-run - it will overwrite the partial output. The Vault Builder and Merger are also safe to re-run on the same destination.
+The extraction can be safely re‑run on the same destination folder - it will overwrite the partial output.  
+The Vault Builder and Merger are also **safe to re‑run** on the same inputs and destination.
 
 **Using on macOS or Linux**  
-The Extractor targets Windows-formatted drives. Tabs 2, 3, 4, and 5, plus the Search and Docs windows, are fully cross-platform. The **Open** / **View** buttons use the correct OS-native opener automatically.
+The Extractor targets Windows‑formatted drives. Tabs 2, 3, 4, and 5, plus the Search and Docs windows, are fully cross‑platform. The **Open** / **View** buttons use the correct OS‑native opener automatically.
