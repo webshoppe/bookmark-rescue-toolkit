@@ -2,6 +2,16 @@
 
 The Bookmark Rescue Toolkit is intentionally modular. This guide covers everything from adding a new browser in two lines to swapping the window icon to extending the GUI with a new tab.
 
+## Table of contents
+
+- [Adding new browsers](#adding-new-browsers)
+- [Custom window icon](#custom-window-icon)
+- [GUI appearance](#gui-appearance)
+- [Vault dashboard appearance](#vault-dashboard-appearance)
+- [Bookmark Merger: search query customisation](#bookmark-merger-search-query-customisation)
+- [Adding a new GUI tab](#adding-a-new-gui-tab)
+- [Code architecture reference](#code-architecture-reference)
+
 ---
 
 ## Adding New Browsers
@@ -78,6 +88,9 @@ _CHROMIUM_PATHS: dict[str, str] = {
 
 This reduces the number of filesystem `exists()` checks per user profile and noticeably speeds up scans on drives with many user accounts.
 
+This optimization only affects the **Extractor** (Stage 1).  
+You can still convert exported `Bookmarks` or `places.sqlite` files manually via Tabs 2 and 3, or directly through the CLI tools, even if a browser has been commented out here.
+
 ---
 
 ## Custom Window Icon
@@ -102,10 +115,10 @@ When building with `build.py`, both `icon.ico` and `icon.png` are automatically 
 
 | Property | Recommendation |
 |---|---|
-| ICO sizes | 16×16, 32×32, 48×48, 256×256 (all embedded in one `.ico`) |
-| PNG size | 256×256 or 512×512 |
+| ICO sizes | 16x16, 32x32, 48x48, 64x64, 128x128, 256x256 (all embedded in one `.ico`) |
+| PNG size | 256x256 or 512x512 |
 | Format | RGB or RGBA (transparency supported) |
-| Colour space | sRGB |
+| Color space | sRGB |
 
 ### Creating ICO files
 
@@ -116,9 +129,12 @@ You can create high-quality `.ico` files using free tools such as:
 - [ImageMagick](https://imagemagick.org/) (command line):
 
 ```bash
-# Convert a 256x256 PNG to a multi-resolution ICO
-magick input.png -resize 256x256 -define icon:auto-resize="256,128,64,48,32,16" output.ico
+# Convert a PNG to a multi-resolution ICO with all standard Windows sizes
+magick input.png -define icon:auto-resize="256,128,64,48,32,16" output.ico
 ```
+
+> **Tip:** Your source PNG should be at least 256x256 for sharp results at all sizes.
+> Run this command from the repository root after placing your source PNG there.
 
 #### How it works in code
 
@@ -126,24 +142,33 @@ magick input.png -resize 256x256 -define icon:auto-resize="256,128,64,48,32,16" 
 def _load_icon(self) -> None:
     ico = _HERE / "icon.ico"
     png = _HERE / "icon.png"
-    try:
-        if sys.platform == "win32" and ico.exists():
+
+    if sys.platform == "win32" and ico.exists():
+        try:
             self.iconbitmap(str(ico))
-        elif png.exists():
+            return   # success - no need to try PNG
+        except Exception:
+            pass     # malformed .ico - fall through to PNG
+
+    if png.exists():
+        try:
             img = tk.PhotoImage(file=str(png))
             self.iconphoto(True, img)
             self._icon_ref = img   # prevent garbage collection
-    except Exception:
-        pass
+        except Exception:
+            pass     # malformed .png - default Tkinter icon used silently
 ```
 
-`_HERE` is `Path(__file__).parent` - always the folder containing `gui.py` regardless of where Python was launched from.
+`_HERE` is set by `_get_base_path()` which returns the folder containing `gui.py`
+when running from source, or the folder containing `BookmarkRescue.exe` when running
+as a portable build. This ensures icons are always found next to the executable
+regardless of how or where the app was launched.
 
 ---
 
 ## GUI Appearance
 
-### Theme and colour mode
+### Theme and color mode
 
 At the top of `gui.py`:
 
@@ -154,12 +179,12 @@ ctk.set_default_color_theme("blue")  # "blue"   | "green" | "dark-blue"
 
 `"System"` follows the OS dark/light mode preference. Override to `"Dark"` or `"Light"` to lock it.
 
-### Button and accent colours
+### Button and accent colors
 
 Individual widgets accept `fg_color`, `hover_color`, and `text_color`:
 
 ```python
-# Example: change the run button accent colour
+# Example: change the run button accent color
 self.ext_run_btn = ctk.CTkButton(
     tab, text="Run Extraction",
     fg_color="#7c3aed",       # violet background
@@ -168,14 +193,14 @@ self.ext_run_btn = ctk.CTkButton(
 )
 ```
 
-### Colour reference for the current design
+### Color reference for the current design
 
 | Usage | Hex | Notes |
 |---|---|---|
 | Success / ready | `#2ecc71` | Green status text |
-| In-progress | `"orange"` | CTK named colour |
-| Error | `"red"` | CTK named colour |
-| Idle | `"gray"` | CTK named colour |
+| In-progress | `"orange"` | CTK named color |
+| Error | `"red"` | CTK named color |
+| Idle | `"gray"` | CTK named color |
 | Docs button | `#4dabf7` | Blue |
 | Search button | `#2ecc71` | Green |
 | Log utility buttons | `#2c2c2c` | Dark, intentional |
@@ -255,6 +280,13 @@ def _matches(entry: BookmarkEntry) -> bool:
 ```
 
 Add a `date_from` / `date_to` filter by checking `entry.add_date` against a timestamp range before returning `True`.
+
+For example, you could extend `_matches()` to ignore bookmarks older than a certain date by checking `entry.add_date` against a timestamp range:
+
+- keep only bookmarks added after 2020,
+- or filter a specific year when building an audit report.
+
+These filters are applied before returning `True` from `_matches()`, so they integrate cleanly with the existing AND / `-` exclusion logic.
 
 ---
 
