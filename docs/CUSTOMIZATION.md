@@ -82,6 +82,11 @@ This reduces the number of filesystem `exists()` checks per user profile and not
 
 ## Custom Window Icon
 
+<p align="center">
+  <img src="../assets/screenshots/08-custom-window-icon-win10-taskbar.png" width="550" alt="The Windows taskbar displaying the custom icy-white and blue Bookmark Rescue Toolkit folder icon">
+  <br><em>Replacing the default executable icon to perfectly match your local desktop aesthetic.</em>
+</p>
+
 The app looks for an icon file next to `gui.py` on every launch. Place either of these files in the repository root:
 
 | File | Used on | Notes |
@@ -92,11 +97,6 @@ The app looks for an icon file next to `gui.py` on every launch. Place either of
 On Windows, `icon.ico` is tried first. If absent, `icon.png` is used. If neither exists, the default Tkinter icon shows silently - no error, no crash.
 
 When building with `build.py`, both `icon.ico` and `icon.png` are automatically copied into the final `Bookmark-Rescue-Toolkit` folder.
-
-<p align="center">
-  <img src="../assets/screenshots/08-custom-window-icon.png" width="550" alt="The Windows taskbar displaying the custom icy-white and blue Bookmark Rescue Toolkit folder icon">
-  <br><em>Replacing the default executable icon to perfectly match your local desktop aesthetic.</em>
-</p>
 
 ### Recommended specifications
 
