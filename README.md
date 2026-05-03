@@ -1,5 +1,10 @@
 # Bookmark Rescue Toolkit
 
+[![GitHub release](https://img.shields.io/github/v/release/webshoppe/Bookmark-Rescue-Toolkit)](https://github.com/webshoppe/Bookmark-Rescue-Toolkit/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![Platform](https://img.shields.io/badge/Platform-Windows-informational)](https://github.com/webshoppe/Bookmark-Rescue-Toolkit)
+
 > **Recover browser bookmarks from any Windows installation - dead, upgraded or archived.**
 
 A forensic-grade, offline-first toolkit that scans a `Windows.old` folder or any Windows drive backup, extracts bookmark data from **30+ browsers** and converts it into clean, portable HTML for browser import and CSV/JSON exports that plug into spreadsheets, databases and other data tools (for example, Excel, Airtable or Notion).
