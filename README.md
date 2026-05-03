@@ -1,8 +1,8 @@
 # Bookmark Rescue Toolkit
 
-> **Recover browser bookmarks from any Windows installation - dead, upgraded, or archived.**
+> **Recover browser bookmarks from any Windows installation - dead, upgraded or archived.**
 
-A forensic-grade, offline-first toolkit that scans a `Windows.old` folder or any Windows drive backup, extracts bookmark data from **30+ browsers**, and converts it into clean, portable HTML you can import into any browser, or merges it into a single file for Notion, Airtable, or Excel.
+A forensic-grade, offline-first toolkit that scans a `Windows.old` folder or any Windows drive backup, extracts bookmark data from **30+ browsers** and converts it into clean, portable HTML for browser import and CSV/JSON exports that plug into spreadsheets, databases and other data tools (for example, Excel, Airtable or Notion).
 
 <p align="center">
   <img src="./assets/screenshots/00-main-extractor-done.png" width="700" alt="The Extractor tab configured to copy browser data from a Windows.old folder">
@@ -17,11 +17,27 @@ A forensic-grade, offline-first toolkit that scans a `Windows.old` folder or any
 
 ### Windows Compatibility
 
-The Extractor works on any NTFS‑formatted Windows drive or `Windows.old` folder. The single‑file converters, Vault Builder, Merger, and Search run on any OS as long as you provide compatible files (for example, a copied `Bookmarks` file or `places.sqlite`).
+The Extractor works on any NTFS‑formatted Windows drive or `Windows.old` folder. The single‑file converters, Vault Builder, Merger and Search run on any OS as long as you provide compatible files (for example, a copied `Bookmarks` file or `places.sqlite`).
+
+The Extractor is Windows‑only; the converters, Vault Builder, Merger and Search are cross‑platform.
 
 > Developed and tested on Windows 10 IoT Enterprise LTSC (presumed to be compatible with Windows 11).
 
 ---
+
+## Table of contents
+
+- [Features](#features)
+- [Download (portable build)](#download-portable-build)
+- [Repository structure](#repository-structure)
+- [Quick start](#quick-start)
+- [Supported browsers](#supported-browsers)
+- [CLI quick reference](#cli-quick-reference)
+- [Building a portable .exe](#building-a-portable-exe)
+- [Documentation](#documentation)
+- [Privacy & security](#privacy--security)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
@@ -29,7 +45,7 @@ The Extractor works on any NTFS‑formatted Windows drive or `Windows.old` folde
 - **Two conversion engines**: Chromium JSON and Firefox SQLite, both producing universal Netscape HTML
 - **Batch vault builder**: converts everything at once and generates an offline index dashboard
 - **Bookmark merger**: combines multiple browsers into one deduplicated importable file
-- **CSV / JSON export**: flat export compatible with Notion, Airtable, Excel, and custom databases
+- **CSV / JSON export**: flat export compatible with Notion, Airtable, Excel and custom databases
 - **Live search**: search by title or URL across all extracted sources instantly, no conversion needed
 - **Graceful exit guard**: warns before closing if an operation is still running
 - **Custom icon support**: drop `icon.ico` or `icon.png` next to `gui.py` to brand the window
@@ -39,6 +55,20 @@ The Extractor works on any NTFS‑formatted Windows drive or `Windows.old` folde
 - **Fully modular**: every engine runs as a standalone CLI tool or importable Python module
 
 > **Note:** The portable build produces a folder named `Bookmark-Rescue-Toolkit` containing `BookmarkRescue.exe`. This folder (and the `.zip` archive) can be placed anywhere on your system or a USB drive.
+
+---
+
+## Download (portable build)
+
+If you just want the app and do not need the source code:
+
+1. Go to the project’s [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases).
+2. Download the latest file named `BookmarkRescue_vX.Y.Z.zip`.
+3. Extract the zip anywhere (for example, `C:\Bookmark-Rescue-Toolkit\`).
+4. Open the extracted folder and run `BookmarkRescue.exe`.
+
+No Python installation is required on the target machine.  
+Administrator rights are only needed when using the **Extractor** tab on protected folders such as `C:\Windows.old` (see the [GUI Walkthrough](docs/GUI_WALKTHROUGH.md) for details).
 
 ---
 
@@ -77,9 +107,9 @@ Bookmark-Rescue-Toolkit/
 │   ├── MANUAL_TOOLS.md         # CLI reference for all seven engines
 │   └── CUSTOMIZATION.md        # Adding browsers, themes, icons, extending the code
 │
-└── assets/                     # (repo only - intentionally excluded from the portable build)
-│	└── screenshots
-│	    └── .gitkeep            # (empty file so git tracks the folder)
+├── assets/                     # (repo only - intentionally excluded from the portable build)
+│   └── screenshots
+│       └── .gitkeep            # (empty file so git tracks the folder)
 │
 └── sandbox/                    # (optional contributor tool - not in dist build)
     ├── BRT_Sandbox.wsb
@@ -95,7 +125,7 @@ Bookmark-Rescue-Toolkit/
 
 ### Prerequisites
 
-- Python **3.10** or newer (3.12 recommended)
+- Python **3.10+** (developed and tested on 3.12)
 - A desktop environment to run the GUI
 - **Run as Administrator** on Windows when scanning a `Windows.old` folder
 
@@ -162,7 +192,7 @@ python gui.py
 
 Open `index.html` in your site folder - complete offline bookmark vault, ready.
 
-**Need one clean importable file?** Use Tab 5 - Merger to combine and deduplicate all browsers into a single HTML file, or export to CSV/JSON.
+**Need one clean importable file?** Use Tab 5 - Merger to combine and deduplicate all browsers into a single HTML file or export to CSV/JSON.
 
 **Converting a single file?** Use Tab 2 (Chromium JSON) or Tab 3 (Firefox SQLite) directly.
 
@@ -186,6 +216,9 @@ Open `index.html` in your site folder - complete offline bookmark vault, ready.
 | Comet (Perplexity) | Stable |
 | Ungoogled Chromium | Stable |
 
+These are the configurations that have been explicitly verified.  
+Other Chromium-family browsers that store a standard `Bookmarks` JSON file under a user profile may also work when added via the [Customization Guide](docs/CUSTOMIZATION.md).
+
 ### Gecko-family (SQLite format)
 
 | Browser | Notes |
@@ -198,6 +231,9 @@ Open `index.html` in your site folder - complete offline bookmark vault, ready.
 | Mullvad Browser | Installed and portable |
 | Zen Browser | Both registry paths merged |
 | Tor Browser | Installed and portable |
+
+Any Firefox-family browser that uses a standard `places.sqlite` bookmarks database in a `Profiles` folder is typically compatible.  
+For new forks or unusual layouts, you can add or adjust paths using the [Customization Guide](docs/CUSTOMIZATION.md).
 
 ---
 
@@ -235,7 +271,8 @@ python -m core.search --raw "C:\Recovery\Raw" "python -tutorial" --field title
 python -m core.archive_beautifier "C:\Recovery\Raw" "C:\Recovery\Archive"
 ```
 
-All tools accept `--help` for the full argument reference.
+All tools accept `--help` for the full argument reference.  
+For detailed CLI usage and return value schemas, see [`docs/MANUAL_TOOLS.md`](docs/MANUAL_TOOLS.md).
 
 ---
 
@@ -248,7 +285,9 @@ python build.py --zip
 
 This creates `dist/Bookmark-Rescue-Toolkit/BookmarkRescue.exe` and a versioned zip file. Place your `icon.ico` and `icon.png` in the repository root before building so they are automatically included.
 
-See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon setup, UPX compression, antivirus notes, and distribution instructions.
+If you prefer not to build from source, you can download a prebuilt `BookmarkRescue_vX.Y.Z.zip` from the project’s [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases). *(See [Download (portable build)](#download-portable-build)) for more details.)*
+
+See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon setup, UPX compression, antivirus notes and distribution instructions.
 
 ---
 
@@ -258,7 +297,7 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 |---|---|
 | [GUI Walkthrough](docs/GUI_WALKTHROUGH.md) | Tab-by-tab guide with real-world scenarios and troubleshooting |
 | [Manual CLI Tools](docs/MANUAL_TOOLS.md) | Full CLI reference for all seven engines including return value schemas |
-| [Customization Guide](docs/CUSTOMIZATION.md) | Adding browsers, custom icons, themes, and extending the codebase |
+| [Customization Guide](docs/CUSTOMIZATION.md) | Adding browsers, custom icons, themes and extending the codebase |
 | [Building .exe Guide](BUILDING.md) | Step-by-step PyInstaller build guide for portable distribution |
 | [BRT Sandbox Guide](sandbox/SANDBOX_README.md) | Optional Windows Sandbox environment with mock data for consistent screenshots and demos |
 
@@ -269,7 +308,15 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 - All processing is local. No data leaves your machine.
 - SQLite databases are opened in **read-only mode** - the tool cannot modify a live browser profile.
 - `config.json` (saved paths) and `manifest.json` (extraction inventory) are both listed in `.gitignore` and will never be committed.
-- The `.gitignore` also blocks accidental commits of recovered bookmark data, SQLite files, and generated HTML output.
+- The `.gitignore` also blocks accidental commits of recovered bookmark data, SQLite files and generated HTML output.
+
+---
+
+## Background
+
+Bookmark Rescue Toolkit started as a few personal scripts written to recover bookmarks after Windows *"upgrades"* and from old drives. It quickly grew into a full offline pipeline (Extractor → Vault Builder → Merger → Search) that proved useful for drive forensics and personal backups.
+
+It is now open-sourced so anyone can recover browser data from archived Windows installations without relying on cloud sync or a bootable OS.
 
 ---
 
