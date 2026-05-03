@@ -9,21 +9,51 @@ A self-contained Windows Sandbox environment pre-loaded with the Bookmark Rescue
 portable app and realistic mock browser data, using the exact folder structure from the
 documentation so field paths look authentic in screenshots.
 
+## Table of contents
+
+- [Quick Start (One-Click)](#quick-start-one-click)
+- [Two Separate Root Folders](#two-separate-root-folders)
+- [File Placement](#file-placement)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+  - [Step 1 - Run the launcher](#step-1---run-the-launcher)
+  - [Step 2 - Wait for the sandbox (30-60 seconds)](#step-2---wait-for-the-sandbox-30-60-seconds)
+  - [Step 3 - Use these paths in the sandbox app](#step-3---use-these-paths-in-the-sandbox-app)
+  - [Step 4 - Take screenshots](#step-4---take-screenshots)
+- [Mock Data Summary](#mock-data-summary)
+- [Regenerating Mock Data](#regenerating-mock-data)
+- [Adding to the Repo](#adding-to-the-repo)
+- [Troubleshooting](#troubleshooting)
+
 ## Quick Start (One-Click)
 
-1. Copy your latest built app into `C:\Bookmark-Rescue-Toolkit` *(see folder setup distinctions below)*
-2. Double-click `Launch_BRT_Sandbox.bat` *(located in `C:\Bookmark_Rescue\Sandbox\`)*
-3. Wait ~30-60 seconds for the Sandbox to load
-4. The app will launch automatically with the recommended workspace ready
+1. Put the latest portable app in `C:\Bookmark-Rescue-Toolkit`:
+
+   - **Option A – Build from source:**  
+     Build the portable app with `python build.py --zip`, then copy  
+     `dist\Bookmark-Rescue-Toolkit\` to `C:\Bookmark-Rescue-Toolkit\`.
+
+   - **Option B – Download from GitHub Releases:**  
+     Download the latest `BookmarkRescue_vX.Y.Z.zip` from the
+     repository’s [**Releases page**](https://github.com/webshoppe/Bookmark-Rescue-Toolkit/releases), extract it, and place the extracted
+     `Bookmark-Rescue-Toolkit\` folder at `C:\Bookmark-Rescue-Toolkit\`.
+
+2. Double-click `Launch_BRT_Sandbox.bat`  
+   (in `C:\Bookmark_Rescue\Sandbox\` on the host).
+
+3. Wait ~30–60 seconds for Windows Sandbox to load.
+
+4. Inside the sandbox, Bookmark Rescue Toolkit will launch automatically
+   with the recommended workspace already prepared.
 
 Use these paths inside the Sandbox (they match the documentation exactly):
 
-| Tab / Field                  | Path inside Sandbox                     |
-|-----------------------------|-----------------------------------------|
-| Tab 1 - Windows.old Path    | `C:\Windows.old`                        |
-| Tab 1 - Output Directory    | `C:\Bookmark_Rescue\1_Raw_Extracted_Data` |
-| Tab 4 - Site Output Folder  | `C:\Bookmark_Rescue\2_Vault_Site`       |
-| Tab 5 - Save Merged File As | `C:\Bookmark_Rescue\3_Merged`       |
+| Tab / Field                  | Path inside Sandbox                          |
+|-----------------------------|----------------------------------------------|
+| Tab 1 - Windows.old Path    | `C:\Windows.old`                              |
+| Tab 1 - Output Directory    | `C:\Bookmark_Rescue\1_Raw_Extracted_Data`    |
+| Tab 4 - Site Output Folder  | `C:\Bookmark_Rescue\2_Vault_Site`            |
+| Tab 5 - Save Merged File As | `C:\Bookmark_Rescue\3_Merged`                |
 
 ---
 
