@@ -88,3 +88,7 @@ site/
 # Log exports from the GUI activity log.
 manifest.json
 bookmark_rescue_log.txt
+
+# Sandbox generated mock data (if sandbox/ is cloned inside the repo root)
+sandbox/Windows.old/
+sandbox/Mock_Windows_Old/
