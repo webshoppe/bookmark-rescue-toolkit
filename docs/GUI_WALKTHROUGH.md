@@ -2,9 +2,47 @@
 
 This guide covers every panel of the Bookmark Rescue Toolkit GUI in detail, with real-world scenarios and troubleshooting for common issues.
 
+## Table of contents
+
+- [Before you begin](#before-you-begin)
+  - [Getting the Application](#getting-the-application)
+  - [Recommended workspace layout](#recommended-workspace-layout)
+  - [Administrator privileges](#administrator-privileges)
+- [Application layout](#application-layout)
+  - [Status colours](#status-colours)
+  - [Open / View buttons](#open--view-buttons)
+- [Path A: Full recovery pipeline](#path-a-full-recovery-pipeline)
+  - [Tab 1 · Extractor](#tab-1--extractor)
+  - [Tab 4 · Vault Builder](#tab-4--vault-builder)
+- [Path B: Merge into one file (Tab 5 · Merger)](#path-b-merge-into-one-file-tab-5--merger)
+  - [Exporting to CSV or JSON](#exporting-to-csv-or-json)
+- [Path C: Targeted single-file conversion](#path-c-targeted-single-file-conversion)
+  - [Tab 2 · JSON Parser](#tab-2--json-parser)
+  - [Tab 3 · SQLite Parser](#tab-3--sqlite-parser)
+- [Search](#search)
+- [View Docs](#view-docs)
+- [Custom window icon](#custom-window-icon)
+- [Graceful exit](#graceful-exit)
+- [Common issues](#common-issues)
+
 ---
 
 ## Before You Begin
+
+### Getting the Application
+
+#### Option 1: Download Pre-Built Release (Recommended for most users)
+
+1. Go to the [Releases page](https://github.com/webshoppe/Bookmark-Rescue-Toolkit/releases)
+2. Download the latest `BookmarkRescue_vX.Y.Z.zip`
+3. Extract the zip anywhere on your computer
+4. Run `BookmarkRescue.exe` from the `Bookmark-Rescue-Toolkit` folder
+
+No installation or Python required.
+
+#### Option 2: Build from Source
+
+See [BUILDING.md](../BUILDING.md) for instructions if you want to build the latest development version yourself.
 
 ### Recommended workspace layout
 
@@ -23,8 +61,8 @@ C:\
 > - If you are using `BookmarkRescue.exe` from the portable build, you do **not** need Python or a virtual environment. Only the Extractor tab requires Administrator rights when scanning protected folders.
 > - If you are running from source (`python gui.py`), ensure your virtual environment is active and that your terminal is running as Administrator when using the Extractor.
 
-> If you use the optional Windows Sandbox setup in [`sandbox/SANDBOX_README.md`](sandbox/SANDBOX_README.md), this exact workspace structure is created for you automatically inside the sandbox.
-> 
+> If you use the optional Windows Sandbox setup in [`../sandbox/SANDBOX_README.md`](../sandbox/SANDBOX_README.md), this exact workspace structure is created for you automatically inside the sandbox.
+
 ### Administrator privileges
 
 When scanning a `Windows.old` folder, the tool must run as Administrator. Windows protects old user profile folders with NTFS permissions that block normal reads.
@@ -278,7 +316,7 @@ Converts a single Firefox `places.sqlite` to Netscape HTML.
 
 ---
 
-## 🔍 Search
+## Search
 
 Click the green **🔍 Search** button in the header to open the search window. It works directly against the raw extracted sources - no conversion step needed.
 
