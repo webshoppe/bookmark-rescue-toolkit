@@ -7,6 +7,20 @@ Every engine in `core/` runs independently from the command line - no GUI, no di
 
 **Run all commands from the repository root** with your virtual environment active.
 
+## Table of contents
+
+- [Pipeline overview](#pipeline-overview)
+- [Running with the `-m` flag](#running-with-the--m-flag)
+- [Stage 1: Retriever](#stage-1-retriever)
+- [Stage 2a: JSON Parser](#stage-2a-json-parser)
+- [Stage 2b: SQLite Parser](#stage-2b-sqlite-parser)
+- [Stage 3: Vault Builder](#stage-3-vault-builder)
+- [Stage 4: Bookmark Merger](#stage-4-bookmark-merger)
+- [Search engine](#search-engine)
+- [Archive Beautifier (CLI-only)](#archive-beautifier-cli-only)
+- [Supplemental tools](#supplemental-tools)
+- [Scripting and automation](#scripting-and-automation)
+
 ---
 
 ## Pipeline Overview
@@ -461,6 +475,40 @@ For all available options, run:
 ```bash
 python -m core.archive_beautifier --help
 ```
+
+---
+
+## Supplemental tools
+
+### Sandbox screenshot environment (`sandbox/`)
+
+A Windows Sandbox environment for generating clean screenshots and demos, with realistic mock browser data laid out exactly like the examples in this manual.
+
+**What it provides**
+
+- Mock `C:\Windows.old\` with multiple users and browsers
+- Pre-created workspace folders:
+  - `C:\Bookmark_Rescue\1_Raw_Extracted_Data\`
+  - `C:\Bookmark_Rescue\2_Vault_Site\`
+  - `C:\Bookmark_Rescue\3_Merged\`
+- Automatic launch of `BookmarkRescue.exe` inside the sandbox
+- A shared `Screenshots\` folder mapped back to the host
+
+**Setup and usage**
+
+See [`sandbox/SANDBOX_README.md`](../sandbox/SANDBOX_README.md) for full instructions.
+
+Typical host-side usage:
+
+```bash
+C:\Bookmark_Rescue\Sandbox\Launch_BRT_Sandbox.bat
+```
+
+**Notes**
+
+- Requires Windows Sandbox to be enabled on the host.
+- Requires the portable app to be built first via `python build.py`.
+- The `sandbox/` folder is for contributors and is **not** included in the portable `.zip` distribution.
 
 ---
 
