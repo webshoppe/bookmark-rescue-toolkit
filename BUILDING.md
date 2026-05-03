@@ -2,6 +2,23 @@
 
 This guide covers building Bookmark Rescue Toolkit into a self-contained, portable Windows application that requires no Python installation on the target machine.
 
+> If you prefer not to build from source, you can download the latest
+> `BookmarkRescue_vX.Y.Z.zip` from the project’s [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases) and skip directly to extraction and recovery.
+
+## Table of contents
+
+- [How it works](#how-it-works)
+- [Prerequisites](#prerequisites)
+- [Quick build](#quick-build)
+- [Output](#output)
+- [Build size](#build-size)
+- [Antivirus false positives](#antivirus-false-positives)
+- [Customising the .exe icon](#customising-the-exe-icon)
+- [Making changes and rebuilding](#making-changes-and-rebuilding)
+- [Advanced: Editing the spec file](#advanced-editing-the-spec-file)
+- [Versioning](#versioning)
+- [Distributing](#distributing)
+
 ---
 
 ## How It Works
@@ -105,7 +122,7 @@ dist/
         README.md
         LICENSE
         _internal/
-    BookmarkRescue.zip _vX.Y.Z.zip     <- only created with --zip flag
+    BookmarkRescue.zip_vX.Y.Z.zip     <- only created with --zip flag
 ```
 
 > The `.zip` archive created with `--zip` will be named `BookmarkRescue_vX.Y.Z.zip`.
@@ -204,11 +221,12 @@ This project follows semantic versioning (MAJOR.MINOR.PATCH).
 - **PATCH**: Bug fixes and small updates
 
 Before building a release:
-1. Update the version number in `core/version.py` (look for `__version__ = "X.Y.Z"`)
-2. Update any changelog if you maintain one
-3. Run `python build.py --clean --zip`
 
-When publishing on GitHub, use a tag like `vX.Y.Z` that matches the version in `core/version.py`. 
+1. Update the version number in `core/version.py` (look for `__version__ = "X.Y.Z"`).
+2. Update `CHANGELOG.md` for the new version, if present.
+3. Run `python build.py --clean --zip`.
+
+When publishing on GitHub, use a tag like `vX.Y.Z` that matches the version in `core/version.py`.  
 The build script will automatically include the version in the output zip filename (`BookmarkRescue_vX.Y.Z.zip`).
 
 ---
@@ -217,8 +235,9 @@ The build script will automatically include the version in the output zip filena
 
 The `dist/Bookmark-Rescue-Toolkit/` folder is fully self-contained. To distribute it:
 
-1. Run `python build.py --zip`
-2. Upload `dist/BookmarkRescue.zip_vX.Y.Z.zip` to your GitHub release
-3. Users download, extract anywhere, and run `BookmarkRescue.exe`
+1. Run `python build.py --zip`.
+2. Upload `dist/BookmarkRescue_vX.Y.Z.zip` to the project’s
+   [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases).
+3. Users download the zip, extract it anywhere, and run `BookmarkRescue.exe`.
 
-No installer, no admin rights, no Python required on the target machine.
+No installer, no admin rights, and no Python installation are required on the target machine.
