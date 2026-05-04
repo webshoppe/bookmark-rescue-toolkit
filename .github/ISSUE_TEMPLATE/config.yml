@@ -1,0 +1,13 @@
+# GitHub issue template configuration
+#
+# When false:
+#   - Users must pick one of the defined templates
+#   - There is NO "Open a blank issue" button
+# When true:
+#   - Users see both the templates AND a "Open a blank issue" option
+#
+# If you ever want to allow completely free‑form issues again,
+# change this to:
+#   blank_issues_enabled: true
+
+blank_issues_enabled: false
