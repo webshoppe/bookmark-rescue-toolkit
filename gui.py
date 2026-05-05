@@ -135,10 +135,70 @@ def _open_url(url: str) -> None:
 # ---------------------------------------------------------------------------
 
 def _clean_markdown(text: str) -> str:
+    """Lightly convert Markdown to plain text for display in a CTkTextbox.
+
+    Pre-processing handles GitHub-specific syntax (badges, HTML image blocks,
+    inline HTML tags) before the line-by-line Markdown pass runs.
+    """
+    import re
+
+    # ── Pre-pass: handle GitHub-specific and HTML syntax ─────────────────
+
+    # Badge links: [![alt text](img_url)](link_url)
+    # Show as a compact label row so multiple badges read naturally.
+    # Collect all badges on a line, replace the whole line with one label row.
+    def _replace_badge_line(line: str) -> str:
+        pattern = r'\[!\[([^\]]+)\]\([^)]+\)\]\([^)]+\)'
+        badges = re.findall(pattern, line)
+        if not badges:
+            return line
+        # Format: [release v1.0.0] [MIT License] [Python 3.8+] [Windows]
+        return "  " + "  ".join(f"[{b}]" for b in badges)
+
+    # Process HTML blocks: <p ...>, <img ...>, <br>, <em>...</em>
+    # Collapse entire <p align="center">...</p> blocks that contain screenshots
+    # into a single tidy caption line.
+    def _clean_html_blocks(text: str) -> str:
+        # <p> blocks containing <img>: extract alt text as a caption line
+        text = re.sub(
+            r'<p[^>]*>\s*<img[^>]*alt="([^"]*)"[^>]*>.*?</p>',
+            lambda m: f'  [Screenshot: {m.group(1)}]',
+            text, flags=re.DOTALL | re.IGNORECASE,
+        )
+        # <p> blocks containing <img> without alt (use src filename)
+        text = re.sub(
+            r'<p[^>]*>\s*<img[^>]*src="([^"]*)"[^>]*>.*?</p>',
+            lambda m: f'  [Screenshot: {Path(m.group(1)).name}]',
+            text, flags=re.DOTALL | re.IGNORECASE,
+        )
+        # Standalone <img> tags not inside <p>
+        text = re.sub(
+            r'<img[^>]*alt="([^"]*)"[^>]*/?>',
+            lambda m: f'  [Screenshot: {m.group(1)}]',
+            text, flags=re.IGNORECASE,
+        )
+        # <em>...</em> captions -> italic-style indented text
+        text = re.sub(
+            r'<em>(.*?)</em>',
+            lambda m: f'    {m.group(1).strip()}',
+            text, flags=re.DOTALL | re.IGNORECASE,
+        )
+        # Strip remaining block-level HTML tags but keep their text content
+        text = re.sub(r'<(p|div|span|br|center)[^>]*/?>', ' ', text, flags=re.IGNORECASE)
+        text = re.sub(r'</(p|div|span|center)>', ' ', text, flags=re.IGNORECASE)
+        # Clean up runs of spaces left by tag removal
+        text = re.sub(r'  +', ' ', text)
+        return text
+
+    text = _clean_html_blocks(text)
+
+    # ── Line-by-line Markdown pass ────────────────────────────────────────
     lines_out     = []
     in_code_block = False
+
     for raw in text.splitlines():
         line = raw
+
         if line.startswith("```"):
             in_code_block = not in_code_block
             lines_out.append("")
@@ -146,6 +206,18 @@ def _clean_markdown(text: str) -> str:
         if in_code_block:
             lines_out.append("    " + line)
             continue
+
+        # Replace badge lines before any other processing
+        badge_result = _replace_badge_line(line)
+        if badge_result != line:
+            lines_out.append(badge_result)
+            continue
+
+        # Skip lines that are only leftover HTML whitespace
+        if line.strip() in ("<br>", "<br/>", "<br />", ""):
+            lines_out.append("")
+            continue
+
         if line.startswith("######") or line.startswith("#####") or line.startswith("####"):
             lines_out.append("\n  ▸ " + line.lstrip("#").strip()); continue
         if line.startswith("###"):
@@ -156,19 +228,27 @@ def _clean_markdown(text: str) -> str:
             lines_out.append("\n══ " + line.lstrip("#").strip().upper() + " ══"); continue
         if line.strip() in ("---", "***", "___"):
             lines_out.append("  " + "─" * 62); continue
+
         for marker in ("**", "__", "*", "_"):
             while marker in line:
                 s = line.find(marker)
                 e = line.find(marker, s + len(marker))
                 if e == -1: break
                 line = line[:s] + line[s + len(marker):e] + line[e + len(marker):]
+
         while "`" in line:
             s = line.find("`"); e = line.find("`", s + 1)
             if e == -1: break
             line = line[:s] + line[s + 1:e] + line[e + 1:]
+
+        # Blockquotes - skip empty ones (bare >)
+        if line.strip() == ">":
+            continue
         if line.startswith("> "):
             line = "  │ " + line[2:]
+
         lines_out.append(line)
+
     return "\n".join(lines_out)
 
 
