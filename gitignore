@@ -92,7 +92,7 @@ bookmark_rescue_log.txt
 # Sandbox local-only folders - not committed
 # python_installer\ holds the Python setup .exe needed by the CLI sandbox.
 # Add it locally after cloning: C:\Bookmark_Rescue\Sandbox\python_installer\
-sandbox/python_installer/
+sandbox/python_installer/*.exe
 
 # Generated mock Windows.old data created by generate_mock_data.py (if sandbox/ is cloned inside the repo root)
 sandbox/Windows.old/
