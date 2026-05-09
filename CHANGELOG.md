@@ -7,13 +7,54 @@ The project follows [semantic versioning](https://semver.org/spec/v2.0.0.html) i
 ## [Unreleased]
 
 ### Added
--  CLI Sandbox - scripts for the Windows Sandbox screenshot environment.
+-  Dev Sandbox - expanded and enhanced Windows Sandbox screenshot environment with some useful portable apps.
 
 ### Changed
 _No changes yet._
 
 ### Fixed
 _No changes yet._
+
+---
+
+## [1.0.0-rc.3] - 2026-05-08
+
+### Added
+
+- New `sandbox/SANDBOX_README.md` overview describing both sandbox types,
+  shared mock data, host folder layout, and shared troubleshooting.
+- Dedicated GUI and CLI sandbox guides:
+  - `sandbox/GUI_SANDBOX_README.md` for the GUI screenshot sandbox.
+  - `sandbox/CLI_SANDBOX_README.md` for the CLI screenshot sandbox and
+    Python-based test environment.
+- New CLI sandbox tooling in `sandbox/`:
+  - `BRT_CLI_Sandbox.wsb` (offline CLI sandbox config).
+  - `BRT_CLI_Sandbox_Net.wsb` (networking-enabled CLI sandbox config).
+  - `Launch_CLI_Sandbox.bat` (CLI sandbox launcher).
+  - `cli_launcher_inside.bat` (opens the Command Prompt window inside the sandbox).
+  - `cli_sandbox_startup.bat` (scripted CLI session for screenshots).
+
+### Changed
+
+- Renamed the GUI sandbox configuration and launcher for clarity:
+  - `BRT_Sandbox.wsb` → `GUI_Sandbox.wsb`.
+  - `Launch_BRT_Sandbox.bat` → `Launch_GUI_Sandbox.bat`.
+- Updated `sandbox/sandbox_startup.bat` to work as a shared startup script
+  for both GUI and CLI sandboxes.
+- Refined sandbox documentation across the repo:
+  - `GUI_SANDBOX_README.md` now focuses solely on the GUI sandbox flow and
+    links back to `SANDBOX_README.md` for shared setup.
+  - `CLI_SANDBOX_README.md` documents the CLI sandbox workflow, Python
+    installer requirements, and optional GUI testing inside the CLI sandbox.
+- Updated the main `README.md` documentation table to reference the new
+  sandbox overview, GUI sandbox guide, and CLI sandbox guide.
+- Updated `Manual_Tools.md` to correct updated path
+
+### Added / Changed (tooling)
+
+- Extended `.gitignore` to exclude `sandbox/python_installer/*.exe` so the local
+  Python 3.12 installer used by the CLI sandbox is never committed, alongside
+  the existing `sandbox/Windows.old/` mock data ignore.
 
 ---
 
