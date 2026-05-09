@@ -82,46 +82,57 @@ Administrator rights are only needed when using the **Extractor** tab on protect
 ```
 Bookmark-Rescue-Toolkit/
 │
-├── gui.py                      # Unified GUI - run this to start
-├── build.py                    # Build helper - produces the portable .exe
-├── bookmark_rescue.spec        # PyInstaller spec for reproducible builds
-├── requirements.txt            # pip install list (customtkinter only)
+├── gui.py                          # Unified GUI - run this to start
+├── build.py                        # Build helper - produces the portable .exe
+├── bookmark_rescue.spec            # PyInstaller spec for reproducible builds
+├── requirements.txt                # pip install list (customtkinter only)
 ├── .gitignore
 ├── README.md
-├── BUILDING.md                 # Step-by-step guide for building the .exe
+├── BUILDING.md                     # Step-by-step guide for building the .exe
 ├── LICENSE
 │
-├── icon.ico                    # Optional: custom .exe and window icon (Windows)
-├── icon.png                    # Optional: custom window icon (fallback/all platforms)
-├── config.json                 # Auto-generated at runtime - stores last-used paths
-│                               # (listed in .gitignore - never committed)
+├── icon.ico                        # Optional: custom .exe and window icon (Windows)
+├── icon.png                        # Optional: custom window icon (fallback/all platforms)
+├── config.json                     # Auto-generated at runtime - stores last-used paths
+│                                   # (listed in .gitignore - never committed)
 │
-├── core/                       # Standalone engines (importable or CLI)
+├── core/                           # Standalone engines (importable or CLI)
 │   ├── __init__.py
-│   ├── utils.py                # Shared date helpers
-│   ├── retriever.py            # Stage 1   - scan & extract (Tab 1)
-│   ├── json_to_html.py         # Stage 2a  - Chromium JSON -> Netscape HTML (Tab 2)
-│   ├── sqlite_to_html.py       # Stage 2b  - Firefox SQLite -> Netscape HTML (Tab 3)
-│   ├── vault_builder.py        # Stage 3   - batch convert + dashboard (Tab 4)
-│   ├── bookmark_merger.py      # Stage 4   - merge, deduplicate, CSV/JSON export (Tab 5)
-│   ├── archive_beautifier.py   # CLI-only  - styled HTML5 archive (alternate output)
-│   └── search.py               # Search engine - query across all sources
+│   ├── version.py                  # Single source of truth for version number
+│   ├── utils.py                    # Shared date helpers
+│   ├── retriever.py                # Stage 1  - scan & extract (Tab 1)
+│   ├── json_to_html.py             # Stage 2a - Chromium JSON -> Netscape HTML (Tab 2)
+│   ├── sqlite_to_html.py           # Stage 2b - Firefox SQLite -> Netscape HTML (Tab 3)
+│   ├── vault_builder.py            # Stage 3  - batch convert + dashboard (Tab 4)
+│   ├── bookmark_merger.py          # Stage 4  - merge, deduplicate, CSV/JSON export (Tab 5)
+│   ├── archive_beautifier.py       # CLI-only - styled HTML5 archive (alternate output)
+│   └── search.py                   # Search engine - query across all sources
 │
 ├── docs/
-│   ├── GUI_WALKTHROUGH.md      # Tab-by-tab GUI guide with scenarios
-│   ├── MANUAL_TOOLS.md         # CLI reference for all seven engines
-│   └── CUSTOMIZATION.md        # Adding browsers, themes, icons, extending the code
+│   ├── CUSTOMIZATION.md            # Adding browsers, themes, icons, extending the code
+│   ├── GUI_WALKTHROUGH.md          # Tab-by-tab GUI guide with scenarios
+│   └── MANUAL_TOOLS.md             # CLI reference for all seven engines
 │
-├── assets/                     # (repo only - intentionally excluded from the portable build)
-│   └── screenshots
-│       └── .gitkeep            # (empty file so git tracks the folder)
+├── assets/                         # Repo media only - not included in dist build
+│   └── screenshots/
+│       └── .gitkeep                # Empty placeholder so git tracks the folder
 │
-└── sandbox/                    # (optional contributor tool - not in dist build)
-    ├── BRT_Sandbox.wsb
-    ├── Launch_BRT_Sandbox.bat
-    ├── sandbox_startup.bat
-    ├── generate_mock_data.py
-    └── SANDBOX_README.md		
+└── sandbox/                        # Optional contributor tools - not in dist build
+    ├── BRT_CLI_Sandbox.wsb         # CLI sandbox config (offline)
+    ├── BRT_CLI_Sandbox_Net.wsb     # CLI sandbox config (networking on)
+    ├── CLI_SANDBOX_README.md       # CLI sandbox guide
+    ├── GUI_SANDBOX_README.md       # GUI sandbox guide
+    ├── GUI_Sandbox.wsb             # GUI sandbox config
+    ├── Launch_CLI_Sandbox.bat      # CLI sandbox launcher
+    ├── Launch_GUI_Sandbox.bat      # GUI sandbox launcher
+    ├── SANDBOX_README.md           # Master overview of both sandboxes
+    ├── cli_launcher_inside.bat     # Spawns visible CMD (Command Prompt) window inside CLI sandbox
+    ├── cli_sandbox_startup.bat     # CLI session script
+    ├── generate_mock_data.py       # Creates mock Windows.old data (shared)
+    ├── sandbox_startup.bat         # CLI/GUI sandbox startup script
+    └── python_installer/           # Place Python 3.12 installer here (not committed)
+        └── README.md               # Basic overview and reference (placeholder)
+        
 ```
 
 ---
@@ -246,32 +257,54 @@ For new forks or unusual layouts, you can add or adjust paths using the [Customi
 
 Run all commands from the **repository root** with your virtual environment active.
 
+### Core Pipeline Commands
+
 ```bash
 # Extract from Windows.old
 python -m core.retriever "C:\Windows.old" "C:\Recovery\Raw"
+```
 
+```bash
 # Convert a single Chromium Bookmarks file
 python -m core.json_to_html "Chrome_Bookmarks.json" output.html --browser "Google Chrome"
+```
 
+```bash
 # Convert a single Firefox places.sqlite
 python -m core.sqlite_to_html places.sqlite output.html --browser "Firefox"
+```
 
+```bash
 # Build a Netscape HTML vault
 python -m core.vault_builder "C:\Recovery\Raw" "C:\Recovery\Vault"
+```
 
+```bash
 # Merge all extracted browsers into one file
 python -m core.bookmark_merger --raw "C:\Recovery\Raw" -o merged.html
+```
 
+### Export Commands
+
+```bash
 # Export to CSV (for Excel / Airtable / Notion)
 python -m core.bookmark_merger --raw "C:\Recovery\Raw" --export-csv bookmarks.csv
+```
 
+```bash
 # Export to JSON (for custom databases)
 python -m core.bookmark_merger --raw "C:\Recovery\Raw" --export-json bookmarks.json
+```
 
-# Search across all extracted sources
+### Search & Archive Commands
+
+```bash
+# Live search across all extracted sources
 python -m core.search --raw "C:\Recovery\Raw" "github"
 python -m core.search --raw "C:\Recovery\Raw" "python -tutorial" --field title
+```
 
+```bash
 # Build a styled HTML5 archive (CLI-only; alternate to Vault Builder)
 python -m core.archive_beautifier "C:\Recovery\Raw" "C:\Recovery\Archive"
 ```
@@ -302,9 +335,11 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 |---|---|
 | [GUI Walkthrough](docs/GUI_WALKTHROUGH.md) | Tab-by-tab guide with real-world scenarios and troubleshooting |
 | [Manual CLI Tools](docs/MANUAL_TOOLS.md) | Full CLI reference for all seven engines including return value schemas |
-| [Customization Guide](docs/CUSTOMIZATION.md) | Adding browsers, custom icons, themes and extending the codebase |
+| [Customization Guide](docs/CUSTOMIZATION.md) | Adding browsers, custom icons, themes, and extending the codebase |
 | [Building .exe Guide](BUILDING.md) | Step-by-step PyInstaller build guide for portable distribution |
-| [BRT Sandbox Guide](sandbox/SANDBOX_README.md) | Optional Windows Sandbox environment with mock data for consistent screenshots and demos |
+| [Sandbox Overview](sandbox/SANDBOX_README.md) | Explains both sandbox types, shared mock data, and host folder layout |
+| [GUI Sandbox Guide](sandbox/GUI_SANDBOX_README.md) | One-click GUI sandbox for consistent app screenshots and demo data |
+| [CLI Sandbox Guide](sandbox/CLI_SANDBOX_README.md) | CLI-focused sandbox for scripted runs and Command Prompt screenshots |
 
 ---
 
