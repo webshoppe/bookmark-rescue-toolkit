@@ -7,4 +7,4 @@
 # build.py reads it to name the distribution zip.
 # -------------------------------------------------------
 
-__version__ = "1.0.0"
+__version__ = "1.0.0-rc.3"
