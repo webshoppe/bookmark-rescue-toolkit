@@ -1,4 +1,4 @@
-# GUI Sandbox
+# BRT GUI Sandbox
 
 > **Optional contributor tool**
 >
