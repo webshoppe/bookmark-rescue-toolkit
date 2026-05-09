@@ -1,0 +1,60 @@
+<Configuration>
+
+  <!--
+    BRT_CLI_Sandbox.wsb - Bookmark Rescue Toolkit CLI Screenshot Environment
+    ========================================================================
+    Place this file in:  C:\Bookmark_Rescue\Sandbox\
+
+    Networking is DISABLED. Python is installed from a local installer file
+    mapped from C:\Bookmark_Rescue\Sandbox\python_installer\
+    Download python-3.12.x-amd64.exe once from python.org and place it there.
+    The launcher will tell you exactly what to download if it is missing.
+
+    Mapped folders:
+      C:\Bookmark-Rescue-Toolkit\               -> read-only source repo
+      C:\Bookmark_Rescue\Windows.old\           -> read-only mock data
+      C:\Bookmark_Rescue\Screenshots\           -> read-write output
+      C:\Bookmark_Rescue\Sandbox\               -> read-only scripts + installer
+  -->
+
+  <MemoryInMB>4096</MemoryInMB>
+  <Networking>Disable</Networking>
+  <vGPU>Enable</vGPU>
+
+  <MappedFolders>
+
+    <!-- Repo mapped to same path as host so commands match the docs exactly -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark-Rescue-Toolkit</HostFolder>
+      <SandboxFolder>C:\Bookmark-Rescue-Toolkit</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+    <!-- Mock Windows.old - shared with the GUI sandbox -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\Windows.old</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\MockSource</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+    <!-- Screenshot output -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\Screenshots</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\Screenshots</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+
+    <!-- Sandbox scripts AND python installer subfolder -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\Sandbox</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+  </MappedFolders>
+
+  <LogonCommand>
+    <Command>cmd.exe /c "C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts\cli_launcher_inside.bat"</Command>
+  </LogonCommand>
+
+</Configuration>

@@ -1,9 +1,9 @@
 <Configuration>
 
   <!--
-    BRT_Sandbox.wsb
+    GUI_Sandbox.wsb
     Place this file in:  C:\Bookmark_Rescue\Sandbox\
-    Launch via:          Launch_BRT_Sandbox.bat  (never double-click this directly)
+    Launch via:          Launch_GUI_Sandbox.bat  (never double-click this directly)
 
     Host folder layout required before launching:
 

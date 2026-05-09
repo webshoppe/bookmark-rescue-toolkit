@@ -1,6 +1,6 @@
 @echo off
 :: ============================================================================
-:: Launch_BRT_Sandbox.bat
+:: Launch_GUI_Sandbox.bat
 :: Place in: C:\Bookmark_Rescue\Sandbox\
 ::
 :: Two separate root folders (intentional - matches docs and repo naming):
@@ -70,7 +70,7 @@ if not exist "%MOCK_DIR%\Users" (
 )
 
 echo.
-echo  ── Paths to use inside the sandbox ─────────────────────────────
+echo  -- Paths to use inside the sandbox -----------------------------
 echo.
 echo   Tab 1  Windows.old Path:    C:\Windows.old
 echo   Tab 1  Output Directory:    C:\Bookmark_Rescue\1_Raw_Extracted_Data
@@ -80,10 +80,14 @@ echo   Search Search in:           C:\Bookmark_Rescue\1_Raw_Extracted_Data
 echo.
 echo   Screenshots: save to Desktop\Screenshots (syncs to host live)
 echo   Use Snipping Tool directly - Win+Shift+S does not save in Sandbox.
-echo  ─────────────────────────────────────────────────────────────────
+echo  -----------------------------------------------------------------
 echo.
 echo  Launching sandbox...
 echo.
+pause
 
-start "" "%SANDBOX_DIR%\BRT_Sandbox.wsb"
+start "" "%SANDBOX_DIR%\GUI_Sandbox.wsb"
+:: Open Screenshots folder on the HOST so it's ready to receive shots
+timeout /t 3 /nobreak >nul
+start "" explorer.exe "%SHOTS_DIR%"
 endlocal

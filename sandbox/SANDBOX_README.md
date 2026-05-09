@@ -1,94 +1,101 @@
-# BRT Screenshot Sandbox
+# BRT Sandbox Environments
 
-> **Optional contributor tool**
->
-> This sandbox is for maintainers and contributors who need consistent screenshots or demo data.  
-> It is **not required** to use Bookmark Rescue Toolkit.
+> **Optional contributor tools**
+> 
+> These sandboxes are for maintainers and contributors who need consistent
+> screenshots, demo data, or an isolated testing environment.
+> They are **not required** to use Bookmark Rescue Toolkit.
 
-A self-contained Windows Sandbox environment pre-loaded with the Bookmark Rescue Toolkit
-portable app and realistic mock browser data, using the exact folder structure from the
-documentation so field paths look authentic in screenshots.
+Two self-contained Windows Sandbox environments for the Bookmark Rescue Toolkit,
+each serving a different purpose but sharing the same mock data, workspace
+structure, and host folder layout.
 
-## Table of contents
+## At a Glance
 
-- [Quick Start (One-Click)](#quick-start-one-click)
-- [Two Separate Root Folders](#two-separate-root-folders)
-- [File Placement](#file-placement)
-- [Prerequisites](#prerequisites)
-- [Usage](#usage)
-  - [Step 1 - Run the launcher](#step-1---run-the-launcher)
-  - [Step 2 - Wait for the sandbox (30-60 seconds)](#step-2---wait-for-the-sandbox-30-60-seconds)
-  - [Step 3 - Use these paths in the sandbox app](#step-3---use-these-paths-in-the-sandbox-app)
-  - [Step 4 - Take screenshots](#step-4---take-screenshots)
-- [Mock Data Summary](#mock-data-summary)
-- [Regenerating Mock Data](#regenerating-mock-data)
-- [Adding to the Repo](#adding-to-the-repo)
-- [Troubleshooting](#troubleshooting)
-
-## Quick Start (One-Click)
-
-1. Put the latest portable app in `C:\Bookmark-Rescue-Toolkit`:
-
-   - **Option A – Build from source:**  
-     Build the portable app with `python build.py --zip`, then copy  
-     `dist\Bookmark-Rescue-Toolkit\` to `C:\Bookmark-Rescue-Toolkit\`.
-
-   - **Option B – Download from GitHub Releases:**  
-     Download the latest `BookmarkRescue_vX.Y.Z.zip` from the
-     repository’s [**Releases page**](https://github.com/webshoppe/Bookmark-Rescue-Toolkit/releases), extract it, and place the extracted
-     `Bookmark-Rescue-Toolkit\` folder at `C:\Bookmark-Rescue-Toolkit\`.
-
-2. Double-click `Launch_BRT_Sandbox.bat`  
-   (in `C:\Bookmark_Rescue\Sandbox\` on the host).
-
-3. Wait ~30–60 seconds for Windows Sandbox to load.
-
-4. Inside the sandbox, Bookmark Rescue Toolkit will launch automatically
-   with the recommended workspace already prepared.
-
-Use these paths inside the Sandbox (they match the documentation exactly):
-
-| Tab / Field                  | Path inside Sandbox                          |
-|-----------------------------|----------------------------------------------|
-| Tab 1 - Windows.old Path    | `C:\Windows.old`                              |
-| Tab 1 - Output Directory    | `C:\Bookmark_Rescue\1_Raw_Extracted_Data`    |
-| Tab 4 - Site Output Folder  | `C:\Bookmark_Rescue\2_Vault_Site`            |
-| Tab 5 - Save Merged File As | `C:\Bookmark_Rescue\3_Merged`                |
+| | GUI Sandbox | CLI Sandbox |
+|---|---|---|
+| **Purpose** | Screenshot the portable `.exe` GUI | Screenshot CLI tool output in Command Prompt |
+| **Runs** | `BookmarkRescue.exe` (portable build) | Python source via `python -m core.*` & Portable `.exe`|
+| **Networking** | Disabled | Disabled (optional networking-enabled variant available) |
+| **Python required** | No | Yes - installed from local file |
+| **Setup time** | ~30 sec | ~90 sec (local Python install) |
+| **Launcher** | `Launch_GUI_Sandbox.bat` | `Launch_CLI_Sandbox.bat` |
+| **Guide** | [GUI_SANDBOX_README.md](GUI_SANDBOX_README.md) | [CLI_SANDBOX_README.md](CLI_SANDBOX_README.md) |
 
 ---
 
-## Two Separate Root Folders
+## Shared Setup
 
-The setup uses two distinct root folders that should not be confused.
+Both sandboxes use the same host folder layout and mock data. Set these up
+once and both environments are ready.
 
-> **Important distinction**:  
-> `C:\Bookmark-Rescue-Toolkit\` (hyphen) = the app itself  
-> `C:\Bookmark_Rescue\` (underscore) = the working workspace for screenshots
+### Windows Sandbox
+
+Must be enabled before either sandbox can run:
 
 ```
-C:\Bookmark-Rescue-Toolkit\          <- your repo (hyphen, matches GitHub name)
+OptionalFeatures.exe -> tick "Windows Sandbox" -> OK -> restart
+```
+
+Verify after restart:
+```
+where WindowsSandbox.exe
+```
+
+### Two Separate Root Folders
+
+> `C:\Bookmark-Rescue-Toolkit\` (hyphen) - the repo and portable app
+> `C:\Bookmark_Rescue\` (underscore) - the screenshot workspace
+
+```
+C:\Bookmark-Rescue-Toolkit\          <- repo root (hyphen, matches GitHub name)
     dist\
         Bookmark-Rescue-Toolkit\
-            BookmarkRescue.exe
+            BookmarkRescue.exe        <- required by GUI Sandbox
 
-C:\Bookmark_Rescue\                   <- screenshot workspace (underscore, matches docs)
+C:\Bookmark_Rescue\                   <- shared workspace (underscore, matches docs)
     Sandbox\                          <- all sandbox files live here
-    Screenshots\                      <- shot output folder
-    Windows.old\                      <- mock browser data (generated by launcher)
+    Screenshots\                      <- shot output, live-syncs to host
+    Windows.old\                      <- shared mock data (generated once)
         Users\
-            Alex\
-            Jordan\
+            Alex\    <- Chrome, Edge, Brave, Firefox
+            Jordan\  <- Chrome, Brave, Firefox, Opera
 ```
 
-Inside the sandbox the workspace mirrors the docs exactly:
+### Mock Data
+
+The mock data at `C:\Bookmark_Rescue\Windows.old\` is shared between both
+sandboxes. Generate it once by running the GUI sandbox launcher - it creates
+the data on the host before opening the sandbox:
 
 ```
-C:\Windows.old\                       <- the mock source to scan (Tab 1 field)
-    Users\
-        Alex\    <- Chrome, Edge, Brave, Firefox
-        Jordan\  <- Chrome, Brave, Firefox, Opera
+C:\Bookmark_Rescue\Sandbox\Launch_GUI_Sandbox.bat
+```
 
-C:\Bookmark_Rescue\                   <- workspace root
+You can close the sandbox window immediately after it opens if you only needed
+the mock data for the CLI sandbox.
+
+| User | Browsers | Bookmark categories |
+|---|---|---|
+| Alex | Chrome, Edge, Brave, Firefox | Dev tools, GitHub, Stack Overflow, privacy, learning |
+| Jordan | Chrome, Brave, Firefox, Opera | Shopping, news, streaming, gaming, finance, recipes |
+
+~65 bookmarks per user. All URLs point to public websites only.
+No personal data from any real installation is included.
+
+To regenerate mock data:
+```
+rmdir /s /q C:\Bookmark_Rescue\Windows.old
+```
+Then re-run `Launch_GUI_Sandbox.bat`.
+
+### Inside Both Sandboxes
+
+The workspace mirrors the documentation paths exactly:
+
+```
+C:\Windows.old\                       <- mock source drive (Tab 1 field)
+C:\Bookmark_Rescue\
     1_Raw_Extracted_Data\             <- Tab 1 output
     2_Vault_Site\                     <- Tab 4 output
     3_Merged\                         <- Tab 5 output
@@ -96,140 +103,65 @@ C:\Bookmark_Rescue\                   <- workspace root
 
 ---
 
+## Shared Troubleshooting
+
+**Security warning when double-clicking a launcher**:  
+Windows tags files extracted from a zip with a security zone marker. Right-click the `.bat` file > Properties > tick Unblock > OK. One-time fix per file. Files cloned directly via git are not affected.
+
+**Windows Sandbox not available**:  
+Run `OptionalFeatures.exe`, tick "Windows Sandbox", click OK and restart.
+Confirm with `where WindowsSandbox.exe` after restarting.
+
+**Mock data not found**:  
+Run `Launch_GUI_Sandbox.bat` on the host - it generates
+`C:\Bookmark_Rescue\Windows.old\` which both sandboxes share.
+
+**Screenshots not appearing on host**:  
+Save to `C:\Users\WDAGUtilityAccount\Desktop\Screenshots\` inside the sandbox.
+That folder maps directly to `C:\Bookmark_Rescue\Screenshots\` on the host
+and files sync instantly.
+
+**Win+Shift+S does not save**:  
+This shortcut only copies to clipboard inside Windows Sandbox. Use
+Snipping Tool directly (search it in the Start menu) and use File > Save As.
+
+---
+
 ## File Placement
+
+All files live in `C:\Bookmark_Rescue\Sandbox\`:
 
 ```
 C:\Bookmark_Rescue\Sandbox\
-    BRT_Sandbox.wsb
-    Launch_BRT_Sandbox.bat
-    sandbox_startup.bat
-    generate_mock_data.py
-    SANDBOX_README.md                 <- this file
+    BRT_CLI_Sandbox.wsb              <- CLI sandbox config (offline)
+    BRT_CLI_Sandbox_Net.wsb          <- CLI sandbox config (networking on)
+    cli_launcher_inside.bat          <- spawns CMD window inside CLI sandbox
+    CLI_SANDBOX_README.md            <- CLI sandbox guide
+    cli_sandbox_startup.bat          <- CLI session script
+    generate_mock_data.py            <- mock data generator (shared)
+    GUI_SANDBOX_README.md            <- GUI sandbox guide
+    GUI_Sandbox.wsb                  <- GUI sandbox config
+    Launch_CLI_Sandbox.bat           <- CLI sandbox launcher
+    Launch_GUI_Sandbox.bat           <- GUI sandbox launcher
+    SANDBOX_README.md                <- this file
+    sandbox_startup.bat              <- sandbox startup script (shared)
+    python_installer\
+        python-3.12.10-amd64.exe     <- required by CLI sandbox, not committed
 ```
-
----
-
-## Prerequisites
-
-**Windows Sandbox** - enable via `OptionalFeatures.exe`, tick "Windows Sandbox", restart.
-
-**Portable app built**:
-```
-cd C:\Bookmark-Rescue-Toolkit
-.venv\Scripts\activate
-python build.py
-```
-
-Confirm `C:\Bookmark-Rescue-Toolkit\dist\Bookmark-Rescue-Toolkit\BookmarkRescue.exe` exists.
-
----
-
-## Usage
-
-### Step 1 - Run the launcher
-
-```
-C:\Bookmark_Rescue\Sandbox\Launch_BRT_Sandbox.bat
-```
-
-The launcher checks prerequisites, creates the Screenshots folder, generates
-`C:\Bookmark_Rescue\Windows.old\` if missing, prints the field paths to use,
-then opens the sandbox.
-
-### Step 2 - Wait for the sandbox (30-60 seconds)
-
-The startup script runs automatically and:
-- Creates `C:\Bookmark_Rescue\` and all workspace subfolders
-- Copies mock data to `C:\Windows.old\` inside the sandbox
-- Creates desktop shortcuts to all workspace folders
-- Sets Windows to dark theme
-- Launches BookmarkRescue.exe
-- Opens the Screenshots folder in Explorer
-
-### Step 3 - Use these paths in the sandbox app
-
-| Tab / Field | Enter this path |
-|---|---|
-| Tab 1 - Windows.old Path | `C:\Windows.old` |
-| Tab 1 - Output Directory | `C:\Bookmark_Rescue\1_Raw_Extracted_Data` |
-| Tab 4 - Site Output Folder | `C:\Bookmark_Rescue\2_Vault_Site` |
-| Tab 5 - Save Merged File As | `C:\Bookmark_Rescue\3_Merged\Merged_Bookmarks.html` |
-| Search - Search in | `C:\Bookmark_Rescue\1_Raw_Extracted_Data` |
-
-Run in sequence before taking shots so all status labels show completed states:
-
-1. Tab 1 - fill paths, Run Extraction, wait for green
-2. Tab 4 - fill paths, Generate Vault Site, wait for green
-3. Tab 5 - click "+ Add from Raw Folder", select `1_Raw_Extracted_Data`, set output, Merge Bookmarks
-4. Search - click Search in header, set path, run a query (try: `github`)
-5. View Docs - click the header button
-
-**Tip:** Maximize the app window (`Win + Up Arrow`) before taking screenshots for the cleanest results.
-
-### Step 4 - Take screenshots
-
-Open **Snipping Tool** directly (search it in the Start menu).
-
-> Note: `Win+Shift+S` copies to clipboard only inside Windows Sandbox and does not
-> prompt to save. Use Snipping Tool > File > Save As instead.
-
-Save to `C:\Users\WDAGUtilityAccount\Desktop\Screenshots\`
-
-Files appear immediately in `C:\Bookmark_Rescue\Screenshots\` on your host.
-
----
-
-## Mock Data Summary
-
-| User | Browsers | Bookmark categories |
-|---|---|---|
-| Alex | Chrome, Edge, Brave, Firefox | Dev tools, GitHub, Stack Overflow, privacy tools, learning |
-| Jordan | Chrome, Brave, Firefox, Opera | Shopping, news, streaming, gaming, finance, recipes |
-
-~65 bookmarks per user across realistic sub‑folders.  
-All URLs point to public websites only; **no personal data from any real installation is included**.
-
----
-
-## Regenerating Mock Data
-
-To reset and regenerate:
-```
-rmdir /s /q C:\Bookmark_Rescue\Windows.old
-```
-Then re-run `Launch_BRT_Sandbox.bat`.
 
 ---
 
 ## Adding to the Repo
 
-Recommended placement as an optional supplemental folder:
-
-```
-Bookmark-Rescue-Toolkit\
-    sandbox\                          <- not included in dist build
-        BRT_Sandbox.wsb
-        Launch_BRT_Sandbox.bat
-        sandbox_startup.bat
-        generate_mock_data.py
-        SANDBOX_README.md
-```
-
-The `sandbox\` folder is excluded from `build.py` automatically since it is not
-listed in `ASSETS_TO_COPY`. Add to the repo's `.gitignore` if desired:
+The `sandbox/` folder is excluded from the dist build automatically since it
+is not listed in `ASSETS_TO_COPY` in `build.py`. Add to `.gitignore`:
 
 ```gitignore
-# Sandbox generated data
+# Sandbox generated data and local tools
 sandbox/Windows.old/
+sandbox/python_installer/
 ```
 
-## Troubleshooting
-
-**Sandbox says "admin required" when creating folders**  
-This is expected behavior. The launcher script handles folder creation automatically.
-
-**App doesn't launch**  
-Check that `BookmarkRescue.exe` exists in `C:\WinSandboxed\Bookmark-Rescue-Toolkit\`
-
-**No screenshots appear on host**  
-Make sure you saved them to `C:\Screenshots\` inside the Sandbox.
+The `python_installer\` subfolder should not be committed. Add it locally
+after cloning by downloading the Python 3.12 64-bit installer from
+[python.org](https://www.python.org/downloads/release/python-31210) and placing it there.
