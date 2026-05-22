@@ -501,7 +501,7 @@ See [`sandbox/SANDBOX_README.md`](../sandbox/SANDBOX_README.md) for full instruc
 Typical host-side usage:
 
 ```bash
-C:\Bookmark_Rescue\Sandbox\Launch_GUI_Sandbox.bat
+C:\Bookmark_Rescue\sandbox\Launch_GUI_Sandbox.bat
 ```
 
 **Notes**
