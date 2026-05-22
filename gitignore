@@ -97,3 +97,19 @@ sandbox/python_installer/*.exe
 # Generated mock Windows.old data created by generate_mock_data.py (if sandbox/ is cloned inside the repo root)
 sandbox/Windows.old/
 sandbox/Mock_Windows_Old/
+
+# Sandbox tools - portable binaries added locally, never committed
+sandbox/tools/7zip_installer/*.exe
+sandbox/tools/Firefox/
+sandbox/tools/Notepad++/
+sandbox/tools/SumatraPDF/
+sandbox/tools/PeaZip/
+sandbox/tools/ShareX/*.exe
+
+# ShareX personal folder - exclude generated files but keep pre-configured config
+sandbox/tools/ShareX/ShareX/*
+!sandbox/tools/ShareX/ShareX/ApplicationConfig.json
+
+# Notes folder - host-backed, never commit personal notes
+sandbox/tools/Notes/*
+!sandbox/tools/Notes/.gitkeep
