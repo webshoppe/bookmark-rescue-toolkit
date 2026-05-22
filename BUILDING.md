@@ -3,7 +3,7 @@
 This guide covers building Bookmark Rescue Toolkit into a self-contained, portable Windows application that requires no Python installation on the target machine.
 
 > If you prefer not to build from source, you can download the latest
-> `BookmarkRescue_vX.Y.Z.zip` from the project’s [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases) and skip directly to extraction and recovery.
+> `BookmarkRescue_vX.Y.Z.zip` from the project's [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases) and skip directly to extraction and recovery.
 
 ## Table of contents
 
@@ -59,14 +59,16 @@ The `.zip` archive created with `--zip` will be named `BookmarkRescue_vX.Y.Z.zip
 
 **Setup and activate your environment first, run:**
 
+- **Windows**
 ```bash
 py -3.12 -m venv .venv
-.venv\Scripts\activate          # Windows
+.venv\Scripts\activate
 ```
 
+- **macOS / Linux**
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate       # macOS / Linux
+source .venv/bin/activate
 ```
 
 **Install dependencies**
@@ -74,6 +76,9 @@ source .venv/bin/activate       # macOS / Linux
 ```bash
 pip install -r requirements.txt
 ```
+
+> **pip update notice:**  
+> After running pip you may see a message like `A new release of pip is available: X.X -> X.X`. This is informational only and can be safely ignored - pip works correctly without upgrading.
 
 ***When you are finished, deactivate the virtual environment with:***
 ```bash
@@ -137,13 +142,21 @@ Build time is typically 60-120 seconds on the first run. Subsequent builds are f
 
 Expect the uncompressed folder to be around **80-120 MB** due to the Python runtime and tkinter libraries being bundled. The `.zip` archive compresses to roughly **40-60 MB**.
 
-UPX compression is enabled by default in the spec file and reduces binary sizes by about 30%. UPX is optional — if it is not installed the build still completes, just slightly larger. Install it from [upx.github.io](https://upx.github.io) and ensure it is on your PATH.
+UPX compression is enabled by default in the spec file and reduces binary sizes by about 30%. UPX is optional - if it is not installed the build still completes, just slightly larger. Install it from [upx.github.io](https://upx.github.io) and ensure it is on your PATH.
 
 ---
 
 ## Antivirus False Positives
 
-PyInstaller-built executables are occasionally flagged by antivirus software because of the way Python code gets packed into a PE binary. This is a known issue with PyInstaller broadly, not specific to this project. If you encounter this:
+PyInstaller-built executables are occasionally flagged by antivirus software because of the way Python code gets packed into a PE binary. This is a known issue with PyInstaller broadly, not specific to this project.  
+
+VirusTotal results for the release build: 2/71 detections (Arctic Wolf, Yandex).  
+  - Both are heuristic false positives. The Yandex detection is literally labelled `Riskware.PyInstaller` - it is flagging the bootloader, not any code in the toolkit.  
+  - All major vendors (Windows Defender, Kaspersky, Bitdefender, ESET, Malwarebytes) return clean.  
+  
+A result under 5/71 from reputable vendors is considered clean by the security community.
+
+If you rebuild from source and want to verify your own build:
 
 - Submit the file to [VirusTotal](https://www.virustotal.com) to check the consensus across multiple engines
 - Most security scanners clear PyInstaller-built apps within days of initial false-positive reports
@@ -209,9 +222,6 @@ upx=False,
 
 ---
 
-
----
-
 ## Versioning
 
 This project follows semantic versioning (MAJOR.MINOR.PATCH).
@@ -236,7 +246,7 @@ The build script will automatically include the version in the output zip filena
 The `dist/Bookmark-Rescue-Toolkit/` folder is fully self-contained. To distribute it:
 
 1. Run `python build.py --zip`.
-2. Upload `dist/BookmarkRescue_vX.Y.Z.zip` to the project’s
+2. Upload `dist/BookmarkRescue_vX.Y.Z.zip` to the project's
    [GitHub Releases page](https://github.com/webshoppe/bookmark-rescue-toolkit/releases).
 3. Users download the zip, extract it anywhere, and run `BookmarkRescue.exe`.
 
