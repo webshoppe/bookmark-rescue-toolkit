@@ -22,9 +22,9 @@ A forensic-grade, offline-first toolkit that scans a `Windows.old` folder or any
 
 ### Windows Compatibility
 
-The Extractor works on any NTFS‑formatted Windows drive or `Windows.old` folder. The single‑file converters, Vault Builder, Merger and Search run on any OS as long as you provide compatible files (for example, a copied `Bookmarks` file or `places.sqlite`).
+The Extractor works on any NTFS-formatted Windows drive or `Windows.old` folder. The single-file converters, Vault Builder, Merger and Search run on any OS as long as you provide compatible files (for example, a copied `Bookmarks` file or `places.sqlite`).
 
-The Extractor is Windows‑only; the converters, Vault Builder, Merger and Search are cross‑platform.
+The Extractor is Windows-only; the converters, Vault Builder, Merger and Search are cross-platform.
 
 > Developed and tested on Windows 10 IoT Enterprise LTSC (presumed to be compatible with Windows 11).
 
@@ -129,10 +129,25 @@ Bookmark-Rescue-Toolkit/
     ├── cli_launcher_inside.bat     # Spawns visible CMD (Command Prompt) window inside CLI sandbox
     ├── cli_sandbox_startup.bat     # CLI session script
     ├── generate_mock_data.py       # Creates mock Windows.old data (shared)
-    ├── sandbox_startup.bat         # CLI/GUI sandbox startup script
-    └── python_installer/           # Place Python 3.12 installer here (not committed)
-        └── README.md               # Basic overview and reference (placeholder)
-        
+    ├── sandbox_startup.bat         # GUI sandbox startup script
+    ├── python_installer/           # Place Python 3.12 installer here (not committed)
+    │   └── README.md
+    └── tools/                      # Portable tools for sandbox sessions
+        │                           # Copy to C:\Bookmark_Rescue\tools\ on your host
+        ├── 7zip_installer/         # Place 7-Zip installer here (not committed)
+        │   └── README.md
+        ├── Firefox/                # Place Firefox Portable here
+        ├── guides/                 # Individual setup guides for each tool
+        ├── Notepad++/              # Place Notepad++ portable here
+        ├── Notes/                  # Host-backed persistent notes folder
+        ├── PeaZip/                 # Place PeaZip portable here
+        ├── ShareX/                 # Place ShareX portable here
+        │   └── ShareX/
+        │       └── ApplicationConfig.json  # Pre-configured screenshot paths
+        ├── SumatraPDF/             # Place SumatraPDF.exe here
+        ├── setup_tools.bat         # One-time setup script - run inside sandbox
+        └── TOOLS_README.md         # Overview and quick start for all tools
+
 ```
 
 ---
@@ -184,6 +199,9 @@ deactivate
 ```bash
 pip install -r requirements.txt
 ```
+
+> **pip update notice:**  
+> After running pip you may see a message like `A new release of pip is available: X.X -> X.X`. This is informational only and can be safely ignored - pip works correctly without upgrading.
 
 The only external dependency is `customtkinter`. Everything else ships with Python's standard library.
 
@@ -340,6 +358,7 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 | [Sandbox Overview](sandbox/SANDBOX_README.md) | Explains both sandbox types, shared mock data, and host folder layout |
 | [GUI Sandbox Guide](sandbox/GUI_SANDBOX_README.md) | One-click GUI sandbox for consistent app screenshots and demo data |
 | [CLI Sandbox Guide](sandbox/CLI_SANDBOX_README.md) | CLI-focused sandbox for scripted runs and Command Prompt screenshots |
+| [Sandbox Tools Overview](sandbox/tools/TOOLS_README.md) | Optional Firefox/ShareX/Notepad++/PeaZip/7-Zip bundle for use inside both sandboxes |
 
 ---
 
@@ -354,7 +373,7 @@ See [BUILDING.md](BUILDING.md) for the full step-by-step guide, including icon s
 
 ## Background
 
-Bookmark Rescue Toolkit started as a few personal scripts written to recover bookmarks after Windows *"upgrades"* and from old drives. It quickly grew into a full offline pipeline (Extractor → Vault Builder → Merger → Search) that proved useful for drive forensics and personal backups.
+Bookmark Rescue Toolkit started as a few personal scripts written to recover bookmarks after a few Windows *"upgrades"* and from sone old drives. It quickly grew into a full offline pipeline (Extractor → Vault Builder → Merger → Search) that proved useful for drive forensics and personal backups.
 
 It is now open-sourced so anyone can recover browser data from archived Windows installations without relying on cloud sync or a bootable OS.
 
