@@ -2,13 +2,10 @@
 
 > **Optional contributor tools**
 > 
-> These sandboxes are for maintainers and contributors who need consistent
-> screenshots, demo data, or an isolated testing environment.
+> These sandboxes are for maintainers and contributors who need consistent screenshots, demo data, or an isolated testing environment.  
 > They are **not required** to use Bookmark Rescue Toolkit.
 
-Two self-contained Windows Sandbox environments for the Bookmark Rescue Toolkit,
-each serving a different purpose but sharing the same mock data, workspace
-structure, and host folder layout.
+Two self-contained Windows Sandbox environments for the Bookmark Rescue Toolkit, each serving a different purpose but sharing the same mock data, workspace structure, and host folder layout.
 
 ## At a Glance
 
@@ -26,65 +23,73 @@ structure, and host folder layout.
 
 ## Shared Setup
 
-Both sandboxes use the same host folder layout and mock data. Set these up
-once and both environments are ready.
+Both sandboxes use the same host folder layout and mock data. Set these up once and both environments are ready.
+
+> **Optional sandbox tools:**  
+> The `C:\Bookmark_Rescue\tools\` folder is a host‑backed tools bundle that maps to `Desktop\SandboxTools\` inside both sandboxes. It provides Firefox, Notepad++, ShareX, SumatraPDF, PeaZip and 7‑Zip for screenshots and content viewing.  
+See `sandbox/tools/TOOLS_README.md` in the repo for setup and usage details.
+
+> **Sandbox tools repo vs host location:**  
+> In the repository the `tools/` folder lives at `sandbox/tools/` for organizational purposes. On your host machine it must be at `C:\Bookmark_Rescue\tools\` - that is the path the sandbox WSB files map to. 
+> After cloning, copy the `tools/` folder from `sandbox/tools/` to `C:\Bookmark_Rescue\tools\` before running either sandbox. *(do **not** Move)*
 
 ### Windows Sandbox
 
 Must be enabled before either sandbox can run:
 
-```
+```text
 OptionalFeatures.exe -> tick "Windows Sandbox" -> OK -> restart
 ```
 
 Verify after restart:
-```
+```plaintext
 where WindowsSandbox.exe
 ```
 
 ### Two Separate Root Folders
 
-> `C:\Bookmark-Rescue-Toolkit\` (hyphen) - the repo and portable app
-> `C:\Bookmark_Rescue\` (underscore) - the screenshot workspace
+> - `C:\Bookmark-Rescue-Toolkit\` (hyphen) - the repo and portable app  
+> - `C:\Bookmark_Rescue\` (underscore) - the screenshot workspace
 
-```
-C:\Bookmark-Rescue-Toolkit\          <- repo root (hyphen, matches GitHub name)
+```text
+C:\Bookmark-Rescue-Toolkit\           <- repo root (hyphen, matches GitHub name)
     dist\
         Bookmark-Rescue-Toolkit\
             BookmarkRescue.exe        <- required by GUI Sandbox
 
 C:\Bookmark_Rescue\                   <- shared workspace (underscore, matches docs)
-    Sandbox\                          <- all sandbox files live here
+    sandbox\                          <- all sandbox files live here
     Screenshots\                      <- shot output, live-syncs to host
+	tools\                            <- copy from sandbox/tools/ (after cloning before running either sandbox)
     Windows.old\                      <- shared mock data (generated once)
         Users\
-            Alex\    <- Chrome, Edge, Brave, Firefox
-            Jordan\  <- Chrome, Brave, Firefox, Opera
+            Alex\     <- Chrome, Edge, Brave, Firefox
+            Jordan\   <- Chrome, Brave, Firefox, Opera
 ```
+
+> **After cloning:**  
+> Copy `sandbox/tools/` from the repo to `C:\Bookmark_Rescue\tools\` on your host before running either sandbox. The WSB files map that exact host path - placing it inside `sandbox\` will **not** work.
 
 ### Mock Data
 
-The mock data at `C:\Bookmark_Rescue\Windows.old\` is shared between both
-sandboxes. Generate it once by running the GUI sandbox launcher - it creates
-the data on the host before opening the sandbox:
+The mock data at `C:\Bookmark_Rescue\Windows.old\` is shared between both sandboxes. Generate it once by running the GUI sandbox launcher - it creates the data on the host before opening the sandbox:
 
-```
+```text
 C:\Bookmark_Rescue\Sandbox\Launch_GUI_Sandbox.bat
 ```
 
-You can close the sandbox window immediately after it opens if you only needed
-the mock data for the CLI sandbox.
+You can close the sandbox window immediately after it opens if you only needed the mock data for the CLI sandbox.
 
 | User | Browsers | Bookmark categories |
 |---|---|---|
 | Alex | Chrome, Edge, Brave, Firefox | Dev tools, GitHub, Stack Overflow, privacy, learning |
 | Jordan | Chrome, Brave, Firefox, Opera | Shopping, news, streaming, gaming, finance, recipes |
 
-~65 bookmarks per user. All URLs point to public websites only.
+~65 bookmarks per user. All URLs point to public websites only.  
 No personal data from any real installation is included.
 
 To regenerate mock data:
-```
+```text
 rmdir /s /q C:\Bookmark_Rescue\Windows.old
 ```
 Then re-run `Launch_GUI_Sandbox.bat`.
@@ -93,7 +98,7 @@ Then re-run `Launch_GUI_Sandbox.bat`.
 
 The workspace mirrors the documentation paths exactly:
 
-```
+```text
 C:\Windows.old\                       <- mock source drive (Tab 1 field)
 C:\Bookmark_Rescue\
     1_Raw_Extracted_Data\             <- Tab 1 output
@@ -106,33 +111,35 @@ C:\Bookmark_Rescue\
 ## Shared Troubleshooting
 
 **Security warning when double-clicking a launcher**:  
-Windows tags files extracted from a zip with a security zone marker. Right-click the `.bat` file > Properties > tick Unblock > OK. One-time fix per file. Files cloned directly via git are not affected.
+Windows tags files extracted from a zip with a security zone marker.  
+Right-click the `.bat` file > Properties > tick Unblock > OK. One-time fix per file. Files cloned directly via git are not affected.
 
 **Windows Sandbox not available**:  
-Run `OptionalFeatures.exe`, tick "Windows Sandbox", click OK and restart.
+Run `OptionalFeatures.exe`, tick "Windows Sandbox", click OK and restart.  
 Confirm with `where WindowsSandbox.exe` after restarting.
 
 **Mock data not found**:  
-Run `Launch_GUI_Sandbox.bat` on the host - it generates
-`C:\Bookmark_Rescue\Windows.old\` which both sandboxes share.
+Run `Launch_GUI_Sandbox.bat` on the host - it generates `C:\Bookmark_Rescue\Windows.old\` which both sandboxes share.
 
 **Screenshots not appearing on host**:  
-Save to `C:\Users\WDAGUtilityAccount\Desktop\Screenshots\` inside the sandbox.
-That folder maps directly to `C:\Bookmark_Rescue\Screenshots\` on the host
-and files sync instantly.
+Save to `C:\Users\WDAGUtilityAccount\Desktop\Screenshots\` inside the sandbox.  
+That folder maps directly to `C:\Bookmark_Rescue\Screenshots\` on the host and files sync instantly.
 
 **Win+Shift+S does not save**:  
-This shortcut only copies to clipboard inside Windows Sandbox. Use
-Snipping Tool directly (search it in the Start menu) and use File > Save As.
+This shortcut only copies to clipboard inside Windows Sandbox.  
+Use Snipping Tool directly (search it in the Start menu) and use File > Save As.
 
 ---
 
 ## File Placement
 
-All files live in `C:\Bookmark_Rescue\Sandbox\`:
+All files live in `C:\Bookmark_Rescue\sandbox\`:
 
-```
-C:\Bookmark_Rescue\Sandbox\
+> **Note on the tools folder:**  
+> In the repository the tools folder is at `sandbox/tools/`. On your host it must be placed at `C:\Bookmark_Rescue\tools\` (not inside `sandbox\`). Copy it there after cloning before running either sandbox.
+
+```text
+C:\Bookmark_Rescue\sandbox\
     BRT_CLI_Sandbox.wsb              <- CLI sandbox config (offline)
     BRT_CLI_Sandbox_Net.wsb          <- CLI sandbox config (networking on)
     cli_launcher_inside.bat          <- spawns CMD window inside CLI sandbox
@@ -153,8 +160,7 @@ C:\Bookmark_Rescue\Sandbox\
 
 ## Adding to the Repo
 
-The `sandbox/` folder is excluded from the dist build automatically since it
-is not listed in `ASSETS_TO_COPY` in `build.py`. Add to `.gitignore`:
+The `sandbox/` folder is excluded from the dist build automatically since it is not listed in `ASSETS_TO_COPY` in `build.py`. Add to `.gitignore`:
 
 ```gitignore
 # Sandbox generated data and local tools
@@ -162,6 +168,4 @@ sandbox/Windows.old/
 sandbox/python_installer/
 ```
 
-The `python_installer\` subfolder should not be committed. Add it locally
-after cloning by downloading the Python 3.12 64-bit installer from
-[python.org](https://www.python.org/downloads/release/python-31210) and placing it there.
+The `python_installer\` subfolder should not be committed. Add it locally after cloning by downloading the Python 3.12 64-bit installer from [python.org](https://www.python.org/downloads/release/python-31210) and placing it there.

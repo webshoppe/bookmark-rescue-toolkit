@@ -34,6 +34,9 @@ timeout /t 1 /nobreak >nul
 start "" explorer.exe
 timeout /t 2 /nobreak >nul
 
+:: Shortcut to notes folder inside SandboxTools
+powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('%USERPROFILE%\Desktop\Notes.lnk'); $s.TargetPath='%USERPROFILE%\Desktop\SandboxTools\notes'; $s.Save()" >nul 2>&1
+
 :: Launch BookmarkRescue
 start "" "C:\Users\WDAGUtilityAccount\Desktop\BookmarkRescue\BookmarkRescue.exe"
 

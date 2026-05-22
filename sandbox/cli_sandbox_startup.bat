@@ -34,7 +34,7 @@ echo  ============================================================
 echo   Bookmark Rescue Toolkit - CLI Screenshot Session
 echo  ============================================================
 echo.
-echo  Step 1/4: Setting dark theme...
+echo  Step 1/6: Setting dark theme...
 
 :: Dark theme registry - set BEFORE restarting Explorer
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v AppsUseLightTheme /t REG_DWORD /d 0 /f >nul 2>&1
@@ -49,7 +49,7 @@ timeout /t 3 /nobreak >nul
 echo  [OK] Dark theme applied.
 
 echo.
-echo  Step 2/4: Installing Python...
+echo  Step 2/6: Installing Python...
 echo  Looking for installer in:
 echo    C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts\python_installer\
 echo.
@@ -118,6 +118,8 @@ if not exist "C:\Windows.old\Users" (
 )
 
 echo  Creating desktop shortcuts...
+:: Shortcut to Notes folder inside SandboxTools
+powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('%USERPROFILE%\Desktop\Notes.lnk'); $s.TargetPath='%USERPROFILE%\Desktop\SandboxTools\notes'; $s.Save()" >nul 2>&1
 powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('%USERPROFILE%\Desktop\1_Raw_Extracted_Data.lnk'); $s.TargetPath='C:\Bookmark_Rescue\1_Raw_Extracted_Data'; $s.Save()" >nul 2>&1
 powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('%USERPROFILE%\Desktop\2_Vault_Site.lnk'); $s.TargetPath='C:\Bookmark_Rescue\2_Vault_Site'; $s.Save()" >nul 2>&1
 powershell -NoProfile -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('%USERPROFILE%\Desktop\3_Merged.lnk'); $s.TargetPath='C:\Bookmark_Rescue\3_Merged'; $s.Save()" >nul 2>&1

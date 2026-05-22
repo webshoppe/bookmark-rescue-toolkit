@@ -6,7 +6,7 @@ setlocal
 
 set REPO_ROOT=C:\Bookmark-Rescue-Toolkit
 set WORKSPACE=C:\Bookmark_Rescue
-set SANDBOX_DIR=%WORKSPACE%\Sandbox
+set SANDBOX_DIR=%WORKSPACE%\sandbox
 set SHOTS_DIR=%WORKSPACE%\Screenshots
 set MOCK_DIR=%WORKSPACE%\Windows.old
 set PY_DIR=%SANDBOX_DIR%\python_installer
@@ -94,6 +94,6 @@ echo.
 pause
 
 start "" "%SANDBOX_DIR%\BRT_CLI_Sandbox.wsb"
-timeout /t 4 /nobreak >nul
+timeout /t 3 /nobreak >nul
 start "" explorer.exe "%SHOTS_DIR%"
 endlocal

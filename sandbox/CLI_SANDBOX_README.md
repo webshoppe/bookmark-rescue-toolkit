@@ -9,14 +9,18 @@ A Windows Sandbox environment that installs Python from a local installer, loads
 
 It also includes the portable GUI, so you can demo both the CLI tools and `BookmarkRescue.exe` in a single isolated session.
 
-For an overview of both sandbox environments and shared setup, see
-[SANDBOX_README.md](SANDBOX_README.md).
+> **Optional helper tools**  
+> Firefox, Notepad++, ShareX, SumatraPDF, PeaZip and 7‑Zip are available via the host-backed    
+> `C:\Bookmark_Rescue\tools\ → Desktop\SandboxTools\` mapping.  
+> See `sandbox/tools/TOOLS_README.md` in the repo for setup details.
+
+For an overview of both sandbox environments and shared setup, see [SANDBOX_README.md](SANDBOX_README.md).
 
 > **Who is this for?**
 > 
-> - Maintainers capturing consistent CLI screenshots for docs or release notes  
-> - Contributors testing BRT's CLI tools in an isolated, repeatable environment  
-> - Anyone wanting a disposable Windows VM with the repo, mock data, and Python pre‑wired
+> - Maintainers capturing consistent CLI screenshots for docs or release notes.  
+> - Contributors testing BRT's CLI tools in an isolated, repeatable environment.  
+> - Anyone wanting a disposable Windows VM with the repo, mock data, and Python pre‑wired.
 
 ## Table of contents
 
@@ -54,8 +58,8 @@ For an overview of both sandbox environments and shared setup, see
 
 All files live alongside the GUI sandbox files:
 
-```
-C:\Bookmark_Rescue\Sandbox\
+```text
+C:\Bookmark_Rescue\sandbox\
     BRT_CLI_Sandbox.wsb               <- CLI sandbox (offline, no networking)
     BRT_CLI_Sandbox_Net.wsb           <- CLI sandbox (networking on, for pip/GUI)
     cli_launcher_inside.bat           <- spawns visible CMD window inside sandbox
@@ -70,16 +74,20 @@ C:\Bookmark_Rescue\Sandbox\
     sandbox_startup.bat               <- GUI sandbox startup (existing)
     python_installer\
         python-3.12.10-amd64.exe      <- download once, place here
+		README.md                     <- download and setup instructions
 ```
 
 ---
 
 ## Prerequisites
 
-> The CLI sandbox assumes you already have the GUI sandbox set up once (for mock data) and that your repo lives at `C:\Bookmark-Rescue-Toolkit`.
+> The CLI sandbox assumes you already have the GUI sandbox set up once (for mock data) and that your repo lives at `C:\Bookmark-Rescue-Toolkit`.  
+
+> **tools folder location:**  
+> The `tools/` folder lives at `sandbox/tools/` in the repo for organizational purposes but must be placed at `C:\Bookmark_Rescue\tools\` on your host - **not** inside `C:\Bookmark_Rescue\sandbox\`. Copy it there after cloning before running the sandbox. *(do **not** Move)* 
 
 **1. Windows Sandbox enabled**
-```
+```text
 OptionalFeatures.exe -> tick "Windows Sandbox" -> OK -> restart
 ```
 
@@ -92,8 +100,8 @@ Download the Python 3.12.10 Windows 64-bit installer once from:
 Scroll to "Files" and choose "[Windows installer (64-bit)](https://www.python.org/ftp/python/3.12.10/python-3.12.10.exe)".
 
 Save the file to:
-```
-C:\Bookmark_Rescue\Sandbox\python_installer\
+```text
+C:\Bookmark_Rescue\sandbox\python_installer\
 ```
 
 The launcher checks for this file and opens the folder and download page automatically if it is missing.
@@ -108,15 +116,15 @@ The launcher checks for this file and opens the folder and download page automat
 
 The CLI sandbox reuses `C:\Bookmark_Rescue\Windows.old\` from the GUI sandbox. 
 If you have not generated it yet, run the GUI sandbox launcher first:
-```
-C:\Bookmark_Rescue\Sandbox\Launch_GUI_Sandbox.bat
+```text
+C:\Bookmark_Rescue\sandbox\Launch_GUI_Sandbox.bat
 ```
 You can close the sandbox window once it opens - you only need the launcher to run so it generates the mock data on the host.
 
 **4. Repo must be at the expected path**
 
 The CLI sandbox maps your repo directly into the sandbox at the same path:
-```
+```text
 C:\Bookmark-Rescue-Toolkit\
 ```
 If your repo is elsewhere, update the `HostFolder` path in `BRT_CLI_Sandbox.wsb`.
@@ -128,8 +136,8 @@ If your repo is elsewhere, update the `HostFolder` path in `BRT_CLI_Sandbox.wsb`
 ### Step 1 - Run the launcher
 
 Double-click:   
-```
-C:\Bookmark_Rescue\Sandbox\Launch_CLI_Sandbox.bat
+```text
+C:\Bookmark_Rescue\sandbox\Launch_CLI_Sandbox.bat
 ```
 > **Security warning on first run**: If Windows shows an "Unknown Publisher" warning, right-click `Launch_CLI_Sandbox.bat` > Properties > tick **Unblock** > OK. One-time fix. Does not affect git clones, only zip downloads.
 
@@ -137,7 +145,7 @@ C:\Bookmark_Rescue\Sandbox\Launch_CLI_Sandbox.bat
 
 The launcher checks all prerequisites and prints their status:
 
-```
+```plaintext
 [OK] Windows Sandbox available.
 [OK] Repo found.
 [OK] Mock data found.
@@ -153,7 +161,7 @@ If any check fails, the launcher pauses and explains exactly what is missing.
 The sandbox opens and a maximized Command Prompt window appears automatically. 
 You will see numbered steps as each part of setup completes:
 
-```
+```plaintext
 Step 1/4: Setting dark theme...
 [OK] Dark theme applied.
 
@@ -186,7 +194,7 @@ Press any key to begin the screenshot session...
 
 The session runs through five commands automatically, pausing after each:
 
-```
+```plaintext
 -----------------------------------------------------------
  SCREENSHOT: Desktop\Screenshots\01-cli-retriever.png
 -----------------------------------------------------------
@@ -210,7 +218,7 @@ Files appear immediately in `C:\Bookmark_Rescue\Screenshots\` on your host.
 | 5 | `python -m core.retriever --help` | `05-cli-help.png` (optional) |
 
 The prompt shown in each screenshot reads:
-```
+```text
 C:\Bookmark-Rescue-Toolkit>
 ```
 This matches exactly what a user following the documentation would see on their own machine.
@@ -219,43 +227,43 @@ This matches exactly what a user following the documentation would see on their 
 
 After the final `Press any key to continue` the session script exits and leaves you at a live Command Prompt in the repo directory:
 
-```
+```text
 C:\Bookmark-Rescue-Toolkit>
 ```
 
 Python is fully installed and the workspace folders are all populated from the scripted run. You can run any CLI tool directly from here:
 
 **Re-run the search with a different query**  
-```
+```bash
 python -m core.search --raw "C:\Bookmark_Rescue\1_Raw_Extracted_Data" "youtube"
 ```
 
 **Export to CSV**  
-```
+```bash
 python -m core.bookmark_merger --raw "C:\Bookmark_Rescue\1_Raw_Extracted_Data" --export-csv "C:\Bookmark_Rescue\3_Merged\bookmarks.csv"
 ```
 
 **Export to JSON**  
-```
+```bash
 python -m core.bookmark_merger --raw "C:\Bookmark_Rescue\1_Raw_Extracted_Data" --export-json "C:\Bookmark_Rescue\3_Merged\bookmarks.json"
 ```
 
 **Check any tool's options**  
 
-```
+```bash
 python -m core.search --help
 ```
 
-```
+```bash
 python -m core.bookmark_merger --help
 ```
 
-```
+```bash
 python -m core.vault_builder --help
 ```
 
 **Run the archive beautifier (CLI-only tool)**  
-```
+```bash
 python -m core.archive_beautifier "C:\Bookmark_Rescue\1_Raw_Extracted_Data" "C:\Bookmark_Rescue\Archive"
 ```
 
@@ -265,7 +273,7 @@ This is also useful for capturing any additional screenshots not covered by the 
 
 The repo is mapped at `C:\Bookmark-Rescue-Toolkit` which includes the `dist\` folder, so the portable app is already inside the CLI sandbox. You can launch it directly after the CLI session to pick up the GUI flow without leaving the sandbox:
 
-```
+```text
 C:\Bookmark-Rescue-Toolkit\dist\Bookmark-Rescue-Toolkit\BookmarkRescue.exe
 ```
 
@@ -274,7 +282,7 @@ The extraction output in `C:\Bookmark_Rescue\1_Raw_Extracted_Data` from the CLI 
 **Re-running the session**  
 To run through the scripted command sequence again without closing the sandbox, call the startup script directly from the prompt:
 
-```
+```text
 C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts\cli_sandbox_startup.bat
 ```
 
@@ -298,7 +306,7 @@ The startup script applies the following styling:
 - Each command screen clears before running
 - Consistent header on every screen:
 
-```
+```plaintext
 ============================================================
  Bookmark Rescue Toolkit  v1.0.0
 ============================================================
@@ -336,13 +344,15 @@ Launch it the same way - use `Launch_CLI_Sandbox.bat` which opens whichever WSB 
 
 With networking enabled, once setup completes and the scripted session exits back to the prompt, install customtkinter manually:
 
-```
+```bash
 pip install customtkinter
 ```
 
+> **pip update notice:** During Python setup you may see a message like `A new release of pip is available: X.X -> X.X`. This is informational only and can be safely ignored. pip works correctly without upgrading, and the sandbox discards all changes on close anyway.
+
 Then launch the GUI:
 
-```
+```bash
 cd C:\Bookmark-Rescue-Toolkit
 python gui.py
 ```
@@ -354,7 +364,7 @@ The GUI and all CLI tools are then available in the same sandbox session.
 ## Troubleshooting
 
 **Command Prompt window does not appear after sandbox loads**:  
-The LogonCommand fires a small launcher script that waits 6 seconds before opening the Command Prompt window. If nothing appears after 30 seconds, check that `cli_launcher_inside.bat` is present in `C:\Bookmark_Rescue\Sandbox\`.
+The LogonCommand fires a small launcher script that waits 6 seconds before opening the Command Prompt window. If nothing appears after 30 seconds, check that `cli_launcher_inside.bat` is present in `C:\Bookmark_Rescue\sandbox\`.
 
 **Python install fails or times out**:  
 Confirm the installer file is a genuine Python 3.12 64-bit Windows installer (`python-3.12.x-amd64.exe`). The 32-bit installer will install but may not be found on the PATH correctly.
@@ -376,7 +386,7 @@ These files belong in the `sandbox/` folder alongside the GUI sandbox files. The
 
 Suggested `sandbox/` structure for the repo:
 
-```
+```text
 sandbox/                          <- not included in dist build
     BRT_CLI_Sandbox.wsb
     BRT_CLI_Sandbox_Net.wsb       <- one-line network variant, created from BRT_CLI_Sandbox.wsb

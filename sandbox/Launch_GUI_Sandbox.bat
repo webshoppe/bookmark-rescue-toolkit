@@ -1,7 +1,7 @@
 @echo off
 :: ============================================================================
 :: Launch_GUI_Sandbox.bat
-:: Place in: C:\Bookmark_Rescue\Sandbox\
+:: Place in: C:\Bookmark_Rescue\sandbox\
 ::
 :: Two separate root folders (intentional - matches docs and repo naming):
 ::   C:\Bookmark-Rescue-Toolkit\   <- repo (hyphen)
@@ -12,7 +12,7 @@ setlocal
 set REPO_DIST=C:\Bookmark-Rescue-Toolkit\dist\Bookmark-Rescue-Toolkit
 set EXE=%REPO_DIST%\BookmarkRescue.exe
 set WORKSPACE=C:\Bookmark_Rescue
-set SANDBOX_DIR=%WORKSPACE%\Sandbox
+set SANDBOX_DIR=%WORKSPACE%\sandbox
 set SHOTS_DIR=%WORKSPACE%\Screenshots
 set MOCK_DIR=%WORKSPACE%\Windows.old
 
@@ -84,7 +84,6 @@ echo  -----------------------------------------------------------------
 echo.
 echo  Launching sandbox...
 echo.
-pause
 
 start "" "%SANDBOX_DIR%\GUI_Sandbox.wsb"
 :: Open Screenshots folder on the HOST so it's ready to receive shots

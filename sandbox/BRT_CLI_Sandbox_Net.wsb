@@ -3,10 +3,10 @@
   <!--
     BRT_CLI_Sandbox.wsb - Bookmark Rescue Toolkit CLI Screenshot Environment
     ========================================================================
-    Place this file in:  C:\Bookmark_Rescue\Sandbox\
+    Place this file in:  C:\Bookmark_Rescue\sandbox\
 
     Networking is DISABLED. Python is installed from a local installer file
-    mapped from C:\Bookmark_Rescue\Sandbox\python_installer\
+    mapped from C:\Bookmark_Rescue\sandbox\python_installer\
     Download python-3.12.x-amd64.exe once from python.org and place it there.
     The launcher will tell you exactly what to download if it is missing.
 
@@ -14,7 +14,7 @@
       C:\Bookmark-Rescue-Toolkit\               -> read-only source repo
       C:\Bookmark_Rescue\Windows.old\           -> read-only mock data
       C:\Bookmark_Rescue\Screenshots\           -> read-write output
-      C:\Bookmark_Rescue\Sandbox\               -> read-only scripts + installer
+      C:\Bookmark_Rescue\sandbox\               -> read-only scripts + installer
   -->
 
   <MemoryInMB>4096</MemoryInMB>
@@ -46,9 +46,16 @@
 
     <!-- Sandbox scripts AND python installer subfolder -->
     <MappedFolder>
-      <HostFolder>C:\Bookmark_Rescue\Sandbox</HostFolder>
+      <HostFolder>C:\Bookmark_Rescue\sandbox</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts</SandboxFolder>
       <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+    <!-- Tools folder - host-backed, accessible from both sandboxes -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\tools</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SandboxTools</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
     </MappedFolder>
 
   </MappedFolders>

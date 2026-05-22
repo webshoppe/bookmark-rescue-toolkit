@@ -2,7 +2,7 @@
 
   <!--
     GUI_Sandbox.wsb
-    Place this file in:  C:\Bookmark_Rescue\Sandbox\
+    Place this file in:  C:\Bookmark_Rescue\sandbox\
     Launch via:          Launch_GUI_Sandbox.bat  (never double-click this directly)
 
     Host folder layout required before launching:
@@ -56,7 +56,7 @@
 
     <!-- Sandbox scripts -->
     <MappedFolder>
-      <HostFolder>C:\Bookmark_Rescue\Sandbox</HostFolder>
+      <HostFolder>C:\Bookmark_Rescue\sandbox</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SandboxScripts</SandboxFolder>
       <ReadOnly>true</ReadOnly>
     </MappedFolder>
@@ -66,6 +66,13 @@
       <HostFolder>C:\Bookmark_Rescue\Windows.old</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\MockSource</SandboxFolder>
       <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+
+    <!-- Tools folder - host-backed, accessible from both sandboxes -->
+    <MappedFolder>
+      <HostFolder>C:\Bookmark_Rescue\tools</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Desktop\SandboxTools</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
     </MappedFolder>
 
   </MappedFolders>
