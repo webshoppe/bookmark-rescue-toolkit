@@ -7,7 +7,7 @@ The project follows [semantic versioning](https://semver.org/spec/v2.0.0.html) i
 ## [Unreleased]
 
 ### Added
--  Dev Sandbox - expanded and enhanced Windows Sandbox screenshot environment with some useful portable apps.
+-  Joplin portable integration into `sandbox/tools`.
 
 ### Changed
 _No changes yet._
@@ -15,6 +15,26 @@ _No changes yet._
 ### Fixed
 _No changes yet._
 
+---
+
+## [v1.0.0-rc.4] - 2026-05-22
+
+### Added
+- Optional GUI and CLI Windows Sandbox environments for consistent screenshots, demo data, and isolated testing, with a shared overview in `sandbox/SANDBOX_README.md` and dedicated guides for each sandbox.
+- Host-backed sandbox tools bundle (`sandbox/tools/`) with a central tools overview and per-tool setup guides for Firefox Portable, Notepad++, 7-Zip, PeaZip, ShareX, and SumatraPDF.
+
+### Changed
+- Refined the main README and BUILDING guide to better highlight the portable build workflow, repository structure, and release process, keeping terminology consistent with the new sandbox and tools docs.
+- Normalized sandbox documentation to reference the tools overview using the non-link path `sandbox/tools/TOOLS_README.md`, avoiding broken links between `file:///` viewing and GitHub rendering.
+- Updated the Firefox Portable guide to include an explicit credit and pointer to simov’s Markdown Viewer project for full usage details and troubleshooting.
+
+### Fixed
+- Clarified Windows Sandbox prerequisites and the distinction between `C:\Bookmark-Rescue-Toolkit\` (repo/app) and `C:\Bookmark_Rescue\` (workspace), reducing common setup mistakes across both sandbox readmes.
+- Tightened path, casing, and wording inconsistencies in sandbox and tools documentation so folder layouts and copy/paste paths match the actual repo and host structure.
+
+### Added / Changed (tooling)
+- Extended `.gitignore` to exclude sandbox tool binaries and installers (`sandbox/tools/7zip_installer/*.exe`, `sandbox/tools/ShareX/*.exe`, Firefox, Notepad++, SumatraPDF, PeaZip portable folders and Notes folder), ensuring local sandbox tooling is never committed.
+  
 ---
 
 ## [1.0.0-rc.3] - 2026-05-08
